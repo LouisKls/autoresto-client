@@ -1,0 +1,40 @@
+@use '@styles/colors.module' as colors;
+
+* {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  margin: 0;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+
+  min-height: 100vh;
+
+  // background-color: colors.$grey_main_background;
+}
+
+body > #mainContainer {
+  max-height: 100vh;
+  height: 100vh;
+}
+
+html,
+body,
+button,
+input,
+textarea,
+select {
+  font-family: var(--nunitoSansFont);
+}
+
+p {
+  margin: 0;
+}
+
+a {
+  text-decoration: none;
+}
