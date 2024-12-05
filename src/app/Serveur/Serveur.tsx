@@ -109,6 +109,15 @@ const Serveur: React.FC = () => {
     });
   };
 
+  const answer = async () => {
+    try {
+      const userResponse = await listenResponse(); // Wait for response to be captured
+      return userResponse;
+    } catch (error) {
+      console.error("Error during speech recognition:", error);
+    }
+  };
+
   const startOrder = async () => {
     try {
       await handleSpeak("Salut Chef! Si tu veux commencer une commande, dis, Commander!");
@@ -117,16 +126,90 @@ const Serveur: React.FC = () => {
     }
   };
 
+  const restartOrder = async () => {
+    try {
+      await handleSpeak("Désolé Chef mais j'ai pas compris! Si tu veux commencer une commande, dis, Commander!");
+    } catch (error) {
+      console.error("Error during speaking:", error);
+    }
+    const userResponse = await answer();
+    if(userResponse){
+      await handleOrderAnswer(userResponse.toLowerCase());
+    }else{
+      await restartOrder();
+    }
+  };
+
+  const quitOrder = async () => {
+    try {
+      await handleSpeak("Pas de soucis Chef ! A la prochaine !");
+    } catch (error) {
+      console.error("Error during speaking:", error);
+    }
+  };
+
+
+
+  const handleOrderAnswer = async (textAnswer:string) => {
+    if (textAnswer.includes("commander")) {
+      await courses();
+      console.log("Attente finis");
+      const userResponse = await answer();
+      if(userResponse){
+        await handleCoursesAnswer(userResponse.toLowerCase());
+      }else{
+        await restartOrder();
+      }
+    }else{
+      await quitOrder();
+    }
+  };
+
+  const courses = async () => {
+    try {
+      await handleSpeak("Super! Il te faut une entrée, un plat, ou un dessert, mon petit gourmand ?");
+    } catch (error) {
+      console.error("Error during speaking:", error);
+    }
+  };
+
+  const restartCourses = async () => {
+    try {
+      await handleSpeak("Désolé Chef mais j'ai pas compris! Il te faut une entrée, un plat, ou un dessert ?");
+    } catch (error) {
+      console.error("Error during speaking:", error);
+    }
+    const userResponse = await answer();
+    if(userResponse){
+      await handleCoursesAnswer(userResponse.toLowerCase());
+    }else{
+      await restartCourses();
+    }
+  };
+
+  const handleCoursesAnswer = async (answer:string) => {
+    if (answer.includes("entrée") || answer.includes("plat") || answer.includes("dessert")) {
+      await item();
+    }else{
+      await quitOrder();
+    }
+  };
+
+  const item = async () => {
+    try {
+      handleSpeak("Parfait ! J'ai 4 choix à te proposer : Ma grosse bite dans ta bouche, mon fromage de sperme, un caca tout mou ou ta mère ?");
+    } catch (error) {
+      console.error("Error during speaking:", error);
+    }
+  };
+
   const order = async () => {
     await startOrder(); // Wait for "startOrder" to finish before proceeding
-    try {
-      const userResponse = await listenResponse(); // Wait for response to be captured
-
-      if (userResponse.toLowerCase() === "commander") {
-        handleSpeak("Super! Il te faut une entrée, un plat, ou un dessert, mon petit gourmand ?");
-      }
-    } catch (error) {
-      console.error("Error during speech recognition:", error);
+    const userResponse = await answer();
+    if(userResponse){
+      await handleOrderAnswer(userResponse.toLowerCase());
+    }else{
+      await restartOrder();
     }
   };
 
