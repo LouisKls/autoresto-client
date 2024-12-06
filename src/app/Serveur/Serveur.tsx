@@ -187,17 +187,29 @@ const Serveur: React.FC = () => {
     }
   };
 
-  const handleCoursesAnswer = async (answer:string) => {
-    if (answer.includes("entrée") || answer.includes("plat") || answer.includes("dessert")) {
-      await item();
+  const handleCoursesAnswer = async (respond:string) => {
+    if (respond.includes("entrée") || respond.includes("plat") || respond.includes("dessert")) {
+      await itemChoice(["gato","oui","non","long"]);
+      const userResponse = await answer();
+      if(userResponse) {
+        if(userResponse.toLowerCase().includes("oui")){
+          await handleSpeak("SUUUUUUUUUUUUUUUUUUUUUUPER");
+        }
+      }
     }else{
       await quitOrder();
     }
   };
 
-  const item = async () => {
+  const itemChoice = async (items:string[]) => {
     try {
-      handleSpeak("Parfait ! J'ai 4 choix à te proposer : Ma grosse bite dans ta bouche, mon fromage de sperme, un caca tout mou ou ta mère ?");
+      await handleSpeak("Parfait ! J'ai 4 choix à te proposer :");
+      await handleSpeak(items[0]);
+      await handleSpeak(items[1]);
+      await handleSpeak(items[2]);
+      await handleSpeak(items[3]);
+      await handleSpeak("Autres choix");
+      await handleSpeak("Lequel veux tu ?");
     } catch (error) {
       console.error("Error during speaking:", error);
     }
