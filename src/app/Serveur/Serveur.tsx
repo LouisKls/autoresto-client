@@ -10,6 +10,9 @@ const Serveur: React.FC = () => {
 
   const [error, setError] = useState<string>("");
 
+  const [itemOrder, setItemOrder] = useState<string[]>([]);
+
+
   useEffect(() => {
     const loadVoices = () => {
       const availableVoices = window.speechSynthesis.getVoices();
@@ -189,17 +192,32 @@ const Serveur: React.FC = () => {
 
   const handleCoursesAnswer = async (respond:string) => {
     if (respond.includes("entrée") || respond.includes("plat") || respond.includes("dessert")) {
-      await itemChoice(["gato","oui","non","long"]);
-      const userResponse = await answer();
-      if(userResponse) {
-        if(userResponse.toLowerCase().includes("oui")){
-          await handleSpeak("SUUUUUUUUUUUUUUUUUUUUUUPER");
-        }
-      }
+      await chooseAnItem();
     }else{
       await quitOrder();
     }
   };
+
+
+  const chooseAnItem = async () => {
+      const keywords = ["gâteau","bannane","pomme","michel"];
+      await itemChoice(keywords);
+      const userResponse = await answer();
+      if(userResponse) {
+        const matchedKeyword = keywords.find(keyword => 
+          userResponse.toLowerCase().includes(keyword)
+        );
+        if(matchedKeyword){
+          itemOrder.push(matchedKeyword);
+          await handleSpeak("Parfait ! C'est enregistré !");
+          await continueOrder();
+        }
+        if(userResponse.toLowerCase().includes("autre")){
+          await chooseAnItem();
+        }
+      }
+  };
+  
 
   const itemChoice = async (items:string[]) => {
     try {
@@ -214,6 +232,18 @@ const Serveur: React.FC = () => {
       console.error("Error during speaking:", error);
     }
   };
+
+  const continueOrder = async () => {
+    if(itemOrder.length>0){
+      await handleSpeak("Actuellement dans ta commande il y a ces articles :");
+      for (const item of itemOrder) {
+        await handleSpeak(item);
+      }
+    }
+    await handleSpeak("Veux tu, commander autre chose ? Passer au payement ? Ou annuler le dernier article ?");
+  };
+  
+
 
   const order = async () => {
     await startOrder(); // Wait for "startOrder" to finish before proceeding
