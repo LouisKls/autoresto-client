@@ -240,13 +240,62 @@ const Serveur: React.FC = () => {
         await handleSpeak(item);
       }
     }
-    await handleSpeak("Veux tu, commander autre chose ? Passer au payement ? Ou annuler le dernier article ?");
+    await handleSpeak("Veux tu, commander quelque-chose ? Annuler le dernier article ? Ou passer à la réservation ?");
+    const userResponse = await answer();
+    if(userResponse) {
+      await handleContinueOrderAnswer(userResponse.toLowerCase());
+    }else{
+      await continueOrder();
+    }
   };
-  
+
+  const handleContinueOrderAnswer = async (textAnswer:string) => {
+    if (textAnswer.includes("commander")) {
+      await courses();
+      const userResponse = await answer();
+      if(userResponse){
+        await handleCoursesAnswer(userResponse.toLowerCase());
+      }else{
+        await restartOrder();
+      }
+    }else{
+      if (textAnswer.includes("réser")) {
+        await handleSpeak("Super, passons à la réservation");
+        await reservation();
+      }else{
+        if (textAnswer.includes("annuler")) {
+          await handleSpeak("D'accord j'annule ton dernier article");
+          itemOrder.pop();
+          await continueOrder();
+        }else{
+          await continueOrder();
+        }
+      }
+    }
+  };
+
+  const reservation = async () => {
+    await handleSpeak("Vous voulez réserver pour quelle heure ?");
+    const userResponse = await answer();
+
+    if (userResponse) {
+        const timeMatch = userResponse.match(/([01]?\d|2[0-3])h(:?\d{2})?/i);
+        
+        if (timeMatch) {
+            const extractedTime = timeMatch[0];
+            await handleSpeak(`Parfait ! Je réserve pour ${extractedTime}. À toute à l'heure !`);
+        } else {
+            await handleSpeak("Je n'ai pas compris.");
+            await reservation();
+        }
+    } else {
+        await reservation();
+    }
+};
 
 
   const order = async () => {
-    await startOrder(); // Wait for "startOrder" to finish before proceeding
+    await startOrder();
     const userResponse = await answer();
     if(userResponse){
       await handleOrderAnswer(userResponse.toLowerCase());
