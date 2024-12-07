@@ -9,9 +9,12 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "lucide-react": "^0.468.0",
     "next": "15.0.3",
+    "radix-ui": "^1.0.1",
     "react": "19.0.0-rc-66855b96-20241106",
     "react-dom": "19.0.0-rc-66855b96-20241106",
+    "react-hook-form": "^7.54.0",
     "sass": "^1.81.1"
   },
   "devDependencies": {
@@ -20,9 +23,11 @@
     "@types/react-dom": "^18",
     "@typescript-eslint/eslint-plugin": "^8.17.0",
     "@typescript-eslint/parser": "^8.17.0",
+    "classnames": "^2.3.2",
     "eslint": "^8",
     "eslint-config-next": "15.0.3",
     "eslint-config-prettier": "^9.1.0",
+    "react-loader-spinner": "^5.4.5",
     "tsconfig": "*",
     "typescript": "^5"
   }

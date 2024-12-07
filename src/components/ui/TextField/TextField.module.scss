@@ -1,0 +1,66 @@
+@use '@styles/colors.module' as colors;
+
+.inputContainer {
+  width: 100%;
+  position: relative;
+
+  .prefix {
+    top: 50%;
+    left: 15px;
+    transform: translateY(-50%);
+    position: absolute;
+    cursor: pointer;
+    color: black;
+  }
+}
+
+.input {
+  font-size: 16px;
+  border-radius: 12px;
+  border: 0.7px solid #c8c8c8;
+  background: #fff;
+  padding: 13px 20px;
+  font-weight: 500;
+  width: 100%;
+
+  &:focus {
+    outline: 1.5px solid colors.$primary;
+  }
+  &::placeholder {
+    font-weight: 600;
+  }
+
+  &.error {
+    outline: 1.5px solid colors.$red_primary;
+  }
+
+  &.password {
+    padding-right: 40px;
+  }
+
+  &.inputWithPrefix {
+    padding-left: 30px !important;
+  }
+}
+
+.helperText {
+  margin-top: -3px;
+  font-style: italic;
+  color: colors.$grey_placeholder;
+  font-size: 14px;
+
+  &.error {
+    font-style: normal;
+    color: colors.$red_primary;
+  }
+}
+
+.passwordIconContainer {
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
+  position: absolute;
+  height: 24px;
+  cursor: pointer;
+  color: black;
+}
