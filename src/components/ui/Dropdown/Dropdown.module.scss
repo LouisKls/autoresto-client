@@ -1,0 +1,44 @@
+@use '@styles/colors.module' as colors;
+
+.popper {
+  position: relative;
+}
+
+.dropdown {
+  position: absolute;
+  background-color: white;
+  min-width: 200px;
+  border-radius: 13px;
+  border: 0.7px solid colors.$grey_light;
+  box-shadow: 0 4px 25px 0 rgba(0, 0, 0, 0.08);
+  padding: 15px 0;
+  opacity: 0;
+  pointer-events: none;
+  transition: ease-in-out opacity 250ms, transform 250ms;
+  transform: translateY(5px);
+
+  &.open {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  .item {
+    color: black;
+    padding: 10px 20px;
+    font-weight: 500;
+    font-size: 16px;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 120ms;
+
+    &:hover {
+      cursor: pointer;
+      background-color: #f5f2ff;
+    }
+  }
+
+  .separator {
+    border: 0.8px solid colors.$grey_light;
+    margin: 15px 0;
+  }
+}

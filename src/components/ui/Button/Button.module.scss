@@ -1,0 +1,185 @@
+@import '@styles/colors.module';
+
+.button {
+  height: fit-content;
+  width: fit-content;
+  border: none;
+  outline: none;
+  border-radius: 13px;
+  padding: 14px 48px;
+  cursor: pointer;
+  font-size: 14px;
+  box-shadow: 0 4px 15px 0 rgba(0, 0, 0, 0.13);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &.contained {
+    color: white;
+    font-weight: 700;
+    transition: background-color ease-in 200ms;
+
+    &.primary {
+      background-color: $primary;
+
+      &:hover {
+        background-color: $primary_dark;
+      }
+
+      &:has(.loading.active) {
+        background-color: $primary_light;
+      }
+    }
+
+    &.primaryLight {
+      background-color: $primary_light;
+
+      &:hover {
+        background-color: $primary;
+      }
+    }
+
+    &.danger {
+      background-color: $red_primary;
+
+      &:hover {
+        background-color: $red_dark;
+      }
+
+      &:has(.loading.active) {
+        background-color: $red_light;
+      }
+    }
+
+    &.success {
+      background-color: $green_primary;
+
+      &:hover {
+        background-color: $green_dark;
+      }
+
+      &:has(.loading.active) {
+        background-color: $green_light;
+      }
+    }
+
+    &.grey {
+      background-color: $textLight;
+
+      &:hover {
+        background-color: #707070;
+      }
+
+      &:has(.loading.active) {
+        background-color: #7d7d7dcb;
+      }
+    }
+
+    &.blue {
+      background-color: #2b8cfd;
+
+      &:hover {
+        background-color: #0075ff;
+      }
+
+      &:has(.loading.active) {
+        background-color: #0075ff;
+      }
+    }
+
+    &.orange {
+      background-color: #fea413;
+
+      &:hover {
+        background-color: #f19b12;
+      }
+
+      &:has(.loading.active) {
+        background-color: #f19b12ff;
+      }
+    }
+  }
+
+  &.outlined {
+    font-weight: 600;
+    background-color: white;
+    border-width: 1.5px;
+    border-style: solid;
+
+    &:hover {
+      background-color: $grey_hover;
+    }
+
+    &.primary {
+      border-color: $primary;
+      color: $primary;
+    }
+    &.primaryLight {
+      border-color: $primary_light;
+      color: $primary_light;
+    }
+    &.danger {
+      border-color: $red_primary;
+      color: $red_primary;
+    }
+    &.success {
+      border-color: $green_primary;
+      color: $green_primary;
+    }
+    &.grey {
+      border-color: $textLight;
+      color: $textLight;
+    }
+    &.blue {
+      border-color: #2b8cfd;
+      color: #2b8cfd;
+    }
+  }
+
+  &.disabled {
+    cursor: unset;
+    background-color: #a7aab4ff !important;
+  }
+
+  &.thin {
+    padding: 10px 30px;
+    font-size: 14px;
+  }
+
+  > span {
+    width: fit-content;
+    display: block;
+  }
+
+  > .loading {
+    position: absolute;
+    right: -3px;
+    opacity: 0;
+    top: 50%;
+    transform: translateY(-50%);
+
+    transition: opacity 500ms ease-in-out, right 300ms ease-in-out;
+
+    &.active {
+      opacity: 1;
+      right: 20px;
+    }
+  }
+
+  .buttonContent {
+    display: flex;
+    gap: 0;
+    justify-content: center;
+    align-items: center;
+    transition: gap ease-in 200ms;
+
+    &.loading {
+      gap: 20px;
+    }
+  }
+}
+
+.fullWidth {
+  width: 100%;
+}

@@ -1,0 +1,47 @@
+$primary_dark: #FCB85F;
+$primary: #FCB85F;
+$primary_light: #F6C789;
+$title_background: #e9e2ff;
+$textDark: #000;
+$textLight: #7d7d7d;
+$grey_sections_background: #f4f4f4;
+$grey_main_background: #fcfcfc;
+$grey_placeholder: #979797;
+$grey_hover: #f5f5f5;
+$grey_light: #ececec;
+$grey_border: #e2e2e2;
+
+$chip_orange_text: #f4a833;
+$chip_orange_background: #fff2d7;
+$chip_blue_background: #e5f1fe;
+$chip_blue_text: #283cda;
+
+$red_dark: #b80022;
+$red_primary: #d80027;
+$red_light: #d80027cb;
+$green_dark: #2f9d6c;
+$green_primary: #3ac084;
+$green_light: #3ac084d8;
+
+:export {
+  primary: $primary;
+  primaryLight: $primary_light;
+  titleBackground: $title_background;
+  textDark: $textDark;
+  textLight: $textLight;
+  greySectionsBackground: $grey_sections_background;
+  greyMainBackground: $grey_main_background;
+  greyPlaceholder: $grey_placeholder;
+  greyHover: $grey_hover;
+  greyBorder: $grey_border;
+
+  chipOrangeText: $chip_orange_text;
+  chipOrangeBackground: $chip_orange_background;
+  chipBlueText: $chip_blue_text;
+  chipBlueBackground: $chip_blue_background;
+
+  danger: $red_primary;
+  dangerLight: $red_light;
+  success: $green_primary;
+  grey: $textLight;
+}

@@ -1,0 +1,51 @@
+@import '@styles/colors.module';
+
+.root {
+  margin-top: 15px;
+  display: flex;
+  width: fit-content;
+  min-width: 300px;
+  justify-content: flex-start;
+
+  @media screen and (max-width: 500px) {
+    min-width: 200px;
+  }
+
+  &.fullWidth {
+    width: 100% !important;
+    flex-basis: 100% !important;
+  }
+
+  &.inline {
+    gap: 20px;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between !important;
+  }
+
+  &:not(.inline) {
+    gap: 10px;
+    flex-direction: column;
+  }
+
+  .labelContainer {
+    a {
+      float: right;
+      color: $primary;
+      font-weight: 700;
+      text-decoration: underline;
+
+      &:hover {
+        cursor: pointer;
+        color: $primary_dark;
+      }
+    }
+
+    label {
+      font-size: 16px;
+      font-weight: 500;
+      margin-left: 2px;
+      width: fit-content;
+    }
+  }
+}
