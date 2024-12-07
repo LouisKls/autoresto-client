@@ -1,0 +1,52 @@
+@import '@styles/colors.module';
+
+.buttonContainer {
+  width: 100%;
+
+  .categoryButton {
+    width: 100%;
+    padding: 5px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 17px;
+    font-weight: 700;
+    border-radius: 13px;
+    background-color: white;
+    transition: transform ease-in 200ms;
+    position: relative;
+    color: black;
+    box-shadow: 0px 4px 15px 0px rgba(0, 0, 0, 0.08);
+
+    &.selected {
+      background-color: $primary!important;
+      color: white!important;
+    }
+
+    .categoryImage {
+      left: 15px;
+      top: 20px;
+      transform: translateY(-5%);
+      height: 60px;
+      width: 57px;
+
+      > img {
+        height: 100%;
+        width: 100%;
+      }
+    }
+
+    &:hover {
+      cursor: pointer;
+      transform: translateY(-5%);
+    }
+
+    .categoryLabel {
+      text-align: center;
+      transform: translateY(-40%);
+      font-size: 12px;
+      font-weight: 900;
+    }
+  }
+}

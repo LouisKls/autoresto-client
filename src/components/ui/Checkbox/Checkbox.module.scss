@@ -1,0 +1,47 @@
+@use '@styles/colors.module' as colors;
+
+.checkboxContainer {
+  margin: 20px 0;
+  display: flex;
+  gap: 17px;
+  padding-left: 1.5px;
+
+  > label {
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+  }
+
+  button {
+    all: unset;
+  }
+
+  .checkboxRoot {
+    width: 20px;
+    height: 20px;
+    background-color: white;
+    cursor: pointer;
+
+    border-radius: 3px;
+    outline: 1.5px solid colors.$primary_light;
+
+    transition: background-color ease-in 200ms;
+
+    &:hover {
+      background-color: colors.$grey_hover;
+    }
+
+    .indicator {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: colors.$primary_light;
+
+      > svg {
+        color: white;
+      }
+    }
+  }
+}
