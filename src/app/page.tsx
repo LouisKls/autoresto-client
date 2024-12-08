@@ -1,11 +1,9 @@
-import Accueil from '@/app/Voiture/Accueil';
-
+import ProductChoice from '@/app/Voiture/ProductChoice';
 
 export default function Home() {
   return (
     <div>
-        <p>Home Page</p>
-      <Accueil></Accueil>
+      <ProductChoice />
     </div>
   );
 }
