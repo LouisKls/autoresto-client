@@ -3,9 +3,8 @@ import ExitCarModeComponent from '@/app/Voiture/ExitCarModeComponent';
 import { FORMULES, PRODUCT_TYPE } from '@/app/Voiture/Formule';
 
 interface props {
-  title: string;
-  chosenFormule: FORMULES;
-  productType: PRODUCT_TYPE;
+  chosenFormule: FORMULES; // pour savoir quelle formule afficher en haut de la page
+  productType: PRODUCT_TYPE; // va permettre de savoir le titre de la page + quels produits récupérer quand on clique sur "autres"
 }
 
 const ProductChoice: React.FC<props> = () => {
