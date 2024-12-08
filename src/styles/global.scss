@@ -1,4 +1,7 @@
 @use '@styles/colors.module' as colors;
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+
 
 * {
   -moz-box-sizing: border-box;
@@ -11,7 +14,7 @@ html,
 body {
   margin: 0;
   padding: 0;
-
+  font-family: 'Roboto', sans-serif;
   min-height: 100vh;
 
   // background-color: colors.$grey_main_background;
@@ -28,7 +31,7 @@ button,
 input,
 textarea,
 select {
-  font-family: var(--nunitoSansFont);
+  // TODO : change or delete:  font-family: var(--nunitoSansFont);
 }
 
 p {
