@@ -82,7 +82,7 @@ export default function HomePage() {
       {SUBCATEGORIES[selectedCategory] && mobile ? (
         <div className={styles.subcategoryListBoxContainer}>
           <div className={styles.subcategoryListBoxWrapper}>
-            <ListBox 
+            <ListBox
               options={options}
               selectedValue= {selectedSubcategory}
               onChange={handleSelectSubcategory}
