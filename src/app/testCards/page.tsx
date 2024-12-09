@@ -10,6 +10,24 @@ export default function testCardsPage() {
           price={4.5}
           imageLink={"viande.png"}
         />
+        <Card 
+          label={"Nom du plat"}
+          description={"Gluten - Arachides"}
+          price={4.5}
+          imageLink={"viande.png"}
+        />
+        <Card 
+          label={"Nom du plat"}
+          description={"Gluten - Arachides"}
+          price={4.5}
+          imageLink={"viande.png"}
+        />
+        <Card 
+          label={"Nom du plat"}
+          description={"Gluten - Arachides"}
+          price={4.5}
+          imageLink={"viande.png"}
+        />
     </div>
   );
 }
