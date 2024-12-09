@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import Serveur from '../Serveur/Serveur';
+import Serveur from '../../components/Serveur/Serveur';
 
 const TestPage = () => {
   return (
