@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import Fuse from "fuse.js";
+
 
 const Serveur: React.FC = () => {
   const [isSpeaking, setIsSpeaking] = useState(false);
@@ -274,9 +276,41 @@ const Serveur: React.FC = () => {
       const userResponse = await answer();
   
       if (userResponse) {
-        const matchedKeyword = items.find(item => 
-          userResponse.toLowerCase().includes(item.name.toLowerCase())
-        );
+        // Fonction de normalisation et de suppression des accents
+        const removeAccents = (str: string) => {
+          return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        };
+
+        // Fonction de nettoyage pour convertir en minuscules et supprimer les accents
+        const sanitizeString = (str: string) => {
+          return removeAccents(str.trim().toLowerCase()); // Supprime les accents et met tout en minuscule
+        };
+
+        // Nettoyage des éléments dans la liste avant de les utiliser avec Fuse
+        const cleanedItems = items.map(item => ({
+          ...item,
+          name: sanitizeString(item.name), // Nettoyer chaque élément
+        }));
+
+        // Configuration de Fuse.js
+        const fuse = new Fuse(cleanedItems, {
+          keys: ['name'],
+          threshold: 0.5, // Tolérance de la correspondance (plus faible = plus strict)
+        });
+
+        // Nettoyer la réponse de l'utilisateur
+        const sanitizedUserResponse = sanitizeString(userResponse);
+
+        // Recherche avec Fuse.js
+        const results = fuse.search(sanitizedUserResponse);
+
+        let matchedKeyword = null;
+        if (results.length > 0) {
+           matchedKeyword = results[0].item;
+          console.log(`Matched item: ${matchedKeyword.name}`);
+        } else {
+          console.log('No match found');
+        }     
   
         if (matchedKeyword) {
           console.log(`Matched item: ${matchedKeyword.name}`);
