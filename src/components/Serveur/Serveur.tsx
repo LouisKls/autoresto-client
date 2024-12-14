@@ -357,7 +357,11 @@ const Serveur: React.FC = () => {
         await handleSpeak(item);
       }
     }
-    await handleSpeak("Veux tu, commander quelque-chose ? Annuler le dernier article ? Ou passer à la réservation ?");
+    if(itemOrder.length>0){
+      await handleSpeak("Veux tu, commander quelque-chose ? Annuler le dernier article ? Ou passer à la réservation ?");
+    }else{
+      await handleSpeak("Veux tu, commander quelque-chose ? Ou stopper la commande");
+    }
     const userResponse = await answer();
     if(userResponse) {
       await handleContinueOrderAnswer(userResponse.toLowerCase());
@@ -385,7 +389,11 @@ const Serveur: React.FC = () => {
           itemOrder.pop();
           await continueOrder();
         }else{
-          await continueOrder();
+          if (textAnswer.includes("stop")) {
+            await handleSpeak("D'accord je stoppe la commande, à la prochaine !");
+          }else{
+            await continueOrder();
+          }
         }
       }
     }
