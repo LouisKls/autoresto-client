@@ -12,6 +12,17 @@ const Serveur: React.FC = () => {
 
   const [itemOrder, setItemOrder] = useState<string[]>([]);
 
+  const [items, setItems] = useState<Item[]>([]);
+
+  type Item = {
+    id: string;
+    name: string;
+    price: number;
+    image: string;
+    type: string;
+    allergene: string;
+    description: string;
+  };  
 
   useEffect(() => {
     const loadVoices = () => {
@@ -33,6 +44,32 @@ const Serveur: React.FC = () => {
     if (typeof window !== "undefined" && window.speechSynthesis.onvoiceschanged !== undefined) {
       window.speechSynthesis.onvoiceschanged = loadVoices;
     }
+  }, []);
+
+  useEffect(() => {
+    const fetchItems = async () => {
+      try {
+        const response = await fetch('/items/items.json');
+        const data = await response.json();
+
+        // Merge items from all categories into a single array
+        const allItems = [
+          ...data.items.entrees,
+          ...data.items.plats,
+          ...data.items.desserts,
+          ...data.items.boissons
+        ];
+
+        console.log("allItems : ",allItems);
+
+
+        setItems(allItems); // Update state with the merged array of items
+      } catch (error) {
+        console.error("Erreur lors du chargement des items :", error);
+      }
+    };
+
+    fetchItems();
   }, []);
 
   const handleSpeak = (text: string) => {
@@ -204,11 +241,18 @@ const Serveur: React.FC = () => {
       await itemChoice(keywords);
       const userResponse = await answer();
       if(userResponse) {
-        const matchedKeyword = keywords.find(keyword => 
-          userResponse.toLowerCase().includes(keyword)
+        const matchedKeyword = items.find(item => 
+          userResponse.toLowerCase().includes(item.name.toLowerCase())
         );
+
+        if (matchedKeyword) {
+          console.log(`Matched item: ${matchedKeyword.name}`);
+        } else {
+          console.log('No match found');
+        }
+
         if(matchedKeyword){
-          itemOrder.push(matchedKeyword);
+          itemOrder.push(matchedKeyword.name);
           await handleSpeak("Parfait ! C'est enregistré !");
           await continueOrder();
         }
