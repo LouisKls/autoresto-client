@@ -13,6 +13,16 @@ const Serveur: React.FC = () => {
   const [itemOrder, setItemOrder] = useState<string[]>([]);
 
   const [items, setItems] = useState<Item[]>([]);
+  const [data, setData] = useState({
+    items: {
+      entrees: [],
+      plats: [],
+      desserts: [],
+      boissons: []
+    }
+  });
+  
+
 
   type Item = {
     id: string;
@@ -51,6 +61,7 @@ const Serveur: React.FC = () => {
       try {
         const response = await fetch('/items/items.json');
         const data = await response.json();
+        setData(data);
 
         // Merge items from all categories into a single array
         const allItems = [
@@ -207,7 +218,7 @@ const Serveur: React.FC = () => {
 
   const courses = async () => {
     try {
-      await handleSpeak("Super! Il te faut une entrée, un plat, ou un dessert, mon petit gourmand ?");
+      await handleSpeak("Super! Il te faut une boisson, une entrée, un plat, ou un dessert, mon petit gourmand ?");
     } catch (error) {
       console.error("Error during speaking:", error);
     }
@@ -227,49 +238,77 @@ const Serveur: React.FC = () => {
     }
   };
 
-  const handleCoursesAnswer = async (respond:string) => {
-    if (respond.includes("entrée") || respond.includes("plat") || respond.includes("dessert")) {
-      await chooseAnItem();
-    }else{
+
+  const handleCoursesAnswer = async (respond: string) => {
+    if (respond.includes("entrée") || respond.includes("plat") || respond.includes("dessert") || respond.includes("boi")) {
+      await chooseAnItem(respond);
+    } else {
       await quitOrder();
     }
   };
-
-
-  const chooseAnItem = async () => {
-      const keywords = ["gâteau","bannane","pomme","michel"];
-      await itemChoice(keywords);
+  
+  const chooseAnItem = async (response: string) => {
+    // Définir les catégories
+    const categories = {
+      entree: data.items.entrees,
+      plat: data.items.plats,
+      dessert: data.items.desserts,
+      boisson: data.items.boissons
+    };
+  
+    let chosenCategory;
+    if (response.includes("entrée")) {
+      chosenCategory = categories.entree;
+    } else if (response.includes("plat")) {
+      chosenCategory = categories.plat;
+    } else if (response.includes("dessert")) {
+      chosenCategory = categories.dessert;
+    } else if (response.includes("boi")) {
+      chosenCategory = categories.boisson;
+    }
+  
+    if (chosenCategory) {
+      // Sélectionner 4 éléments aléatoires de la catégorie choisie
+      const randomItems = getRandomItems(chosenCategory, 4);
+      await itemChoice(randomItems);
       const userResponse = await answer();
-      if(userResponse) {
+  
+      if (userResponse) {
         const matchedKeyword = items.find(item => 
           userResponse.toLowerCase().includes(item.name.toLowerCase())
         );
-
+  
         if (matchedKeyword) {
           console.log(`Matched item: ${matchedKeyword.name}`);
-        } else {
-          console.log('No match found');
-        }
-
-        if(matchedKeyword){
           itemOrder.push(matchedKeyword.name);
           await handleSpeak("Parfait ! C'est enregistré !");
           await continueOrder();
+        } else {
+          console.log('No match found');
         }
-        if(userResponse.toLowerCase().includes("autre")){
-          await chooseAnItem();
+  
+        // Si l'utilisateur mentionne "autre", recommencez le choix
+        if (userResponse.toLowerCase().includes("autre")) {
+          await chooseAnItem(response); // Passez la même catégorie pour choisir à nouveau
         }
       }
+    }
   };
   
+  // Fonction pour obtenir des éléments aléatoires
+  const getRandomItems = (category: any[], count: number) => {
+    const shuffled = [...category].sort(() => 0.5 - Math.random()); // Mélange les éléments
+    return shuffled.slice(0, count); // Prend les "count" premiers éléments
+  };  
 
-  const itemChoice = async (items:string[]) => {
+
+  const itemChoice = async (items:Item[]) => {
     try {
       await handleSpeak("Parfait ! J'ai 4 choix à te proposer :");
-      await handleSpeak(items[0]);
-      await handleSpeak(items[1]);
-      await handleSpeak(items[2]);
-      await handleSpeak(items[3]);
+      await handleSpeak(items[0].name);
+      await handleSpeak(items[1].name);
+      await handleSpeak(items[2].name);
+      await handleSpeak(items[3].name);
       await handleSpeak("Autres choix");
       await handleSpeak("Lequel veux tu ?");
     } catch (error) {
