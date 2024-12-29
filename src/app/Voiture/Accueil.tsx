@@ -1,20 +1,12 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
 import ExitCarModeComponent from '@/app/Voiture/ExitCarModeComponent';
 
 const Accueil: React.FC = () => {
 
-  const navigate = useNavigate(); // Hook pour la navigation
-
-  const handleOrder = () => {
-    // Navigue vers la page de commande
-    navigate('/order');
-  };
-
   return (
     <div style={containerStyle}>
-      <ExitCarModeComponent />
-      <button style={orderButtonStyle} onClick={handleOrder}>COMMANDER</button>
+      <ExitCarModeComponent  containerWidth="90%"/>
+      <button style={orderButtonStyle}>COMMANDER</button>
     </div>
   );
 };
@@ -38,7 +30,9 @@ const orderButtonStyle: React.CSSProperties = {
   fontSize: '24px',
   fontWeight: 'bold',
   cursor: 'pointer',
-  flex: '1 1 auto'
+  flex: '1 1 auto',
+  width: '90%',
+  height: '400px'
 };
 
 export default Accueil;

@@ -1,8 +1,17 @@
 import React from 'react';
 
-const ExitCarModeComponent: React.FC = () => {
+interface ExitCarModeProps {
+  containerWidth: string; // La largeur à passer comme prop
+}
+
+const ExitCarModeComponent: React.FC<ExitCarModeProps> = ({ containerWidth }) => {
+
+  const containerStyle: React.CSSProperties = {
+    width: containerWidth
+  };
+
   return (
-    <div>
+    <div style={containerStyle}>
       <button style={exitCarModeButtonStyle}>QUITTER LE MODE VOITURE</button>
     </div>
   );
