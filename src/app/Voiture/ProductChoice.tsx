@@ -99,6 +99,7 @@ const styles: { [key: string]: React.CSSProperties } = {
   items: {
     display: 'grid',
     gridTemplateColumns: '1fr 1fr',
+    height: '100%',
     gap: '20px',
     marginBottom: '20px'
   },
@@ -121,7 +122,9 @@ const styles: { [key: string]: React.CSSProperties } = {
   },
   actions: {
     display: 'flex',
-    justifyContent: 'space-between'
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    gap: '8px'
   },
   actionButton: {
     backgroundColor: '#007bff',
@@ -131,8 +134,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     fontSize: '16px',
     borderRadius: '5px',
     cursor: 'pointer',
-    flex: 1,
-    marginRight: '10px'
+    flex: 1
   },
   backButton: {
     backgroundColor: '#d9534f',
