@@ -1,9 +1,9 @@
-import ProductChoice from '@/app/Voiture/ProductChoice';
+import Accueil from '@/app/Voiture/Accueil';
 
 export default function Home() {
   return (
     <div>
-      <ProductChoice />
+      <Accueil/>
     </div>
   );
 }
