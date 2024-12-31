@@ -2,10 +2,9 @@ import React from 'react';
 import ExitCarModeComponent from '@/app/Voiture/ExitCarModeComponent';
 
 const Accueil: React.FC = () => {
-
   return (
     <div style={containerStyle}>
-      <ExitCarModeComponent  containerWidth="90%"/>
+      <ExitCarModeComponent containerWidth="90%" />
       <button style={orderButtonStyle}>COMMANDER</button>
     </div>
   );
