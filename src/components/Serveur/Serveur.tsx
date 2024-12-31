@@ -47,86 +47,8 @@ const Serveur: React.FC = () => {
     fetchItems(setData, setItems); // Appeler fetchItems avec les setState
   }, []); // L'effet ne s'exécute qu'une seule fois après le montage
 
-  const handleClickSpeak = (text: string) => {
-    return handleSpeak(text, voices, selectedVoice, setIsSpeaking);
-  };
 
-  const answer = async () => {
-    try {
-      // Wait for response to be captured
-      return await listenResponse(setResponse, setError, setIsListening, isSpeaking, setIsSpeaking);
-    } catch (error) {
-      console.error('Error during speech recognition:', error);
-    }
-  };
-
-  const handleStartOrder = () => {
-    return startOrder(handleClickSpeak);
-  };
-
-  const handleRestartOrder = () => {
-    return restartOrder(handleClickSpeak, answer, handleAnswer);
-  };
-
-  // Utilisation de quitOrder
-  const handleQuitOrder = () => {
-    return quitOrder(handleClickSpeak);
-  };
-
-
-  const handleAnswer = (textAnswer: string) => {
-    return handleOrderAnswer(textAnswer, startCourses, answer, handleCoursesAnswer, handleRestartOrder, handleQuitOrder);
-  };
-
-  const startCourses = () => {
-    return courses(handleClickSpeak);
-  };
-
-  // TODO : not used, but the function restartCourses wasn't used neither
-  const handleRestartCourses = () => {
-    return restartCourses(handleClickSpeak, answer, handleCoursesAnswer);
-  };
-
-
-  const handleCoursesAnswer = async (respond: string) => {
-    if (respond.includes('entrée') || respond.includes('plat') || respond.includes('dessert') || respond.includes('boi')) {
-      await handleItemChoice(respond);
-    } else {
-      await handleQuitOrder();
-    }
-  };
-
-  const handleItemChoice = (response: string) => {
-    return chooseAnItem(response, data, items, itemOrder, handleClickSpeak, startContinueOrder, answer);
-  };
-
-  // TODO : si ça pète c'est là je pense
-  const startContinueOrder = async () => {
-    await continueOrder(itemOrder, handleClickSpeak, answer, continueOrderAnswer);
-  };
-
-  const continueOrderAnswer = async (textAnswer: string) => {
-    await handleContinueOrderAnswer(
-      textAnswer,
-      startCourses,
-      answer,
-      handleCoursesAnswer,
-      handleRestartOrder,
-      handleClickSpeak,
-      handleReservation,
-      startContinueOrder,
-      itemOrder
-    );
-  };
-
-  const handleReservation = () => {
-    return reservation(handleClickSpeak, answer);
-  };
-
-  const handleOrder = () => {
-    return order(handleStartOrder, answer, handleAnswer, handleRestartOrder);
-  };
-
+/*
   return (
     <div style={{
       fontFamily: 'Arial, sans-serif',
@@ -165,6 +87,8 @@ const Serveur: React.FC = () => {
         <p style={{ color: '#555', textAlign: 'center', fontSize: '16px', marginTop: '15px' }}>Écoute en cours...</p>}
     </div>
   );
+  */
+  return (<div></div>);
 
 };
 

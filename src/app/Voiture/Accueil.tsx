@@ -1,11 +1,16 @@
+'use client';
+
 import React from 'react';
 import ExitCarModeComponent from '@/app/Voiture/ExitCarModeComponent';
+import { useServer } from '@/app/Voiture/ServerContext';
 
 const Accueil: React.FC = () => {
+  const { handleOrder } = useServer();
+
   return (
     <div style={containerStyle}>
       <ExitCarModeComponent containerWidth="90%" />
-      <button style={orderButtonStyle}>COMMANDER</button>
+      <button style={orderButtonStyle} onClick={handleOrder}>COMMANDER</button>
     </div>
   );
 };
