@@ -1,0 +1,65 @@
+@import '@styles/colors.module';
+
+.card {
+    box-sizing: border-box;
+    height: 200px;
+    min-width: 240px;
+    width: 240px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-radius: 20px;
+    background-color: white;
+    position: relative;
+    color: black;
+    box-shadow: 0px 4px 15px 0px rgba(0, 0, 0, 0.08);
+    padding: 12px;
+    padding-top: 60px;
+
+    .cardImage {
+        position: absolute;
+        width: 100%;
+        top: -25%;
+        left: 0px;
+        display: flex;
+        justify-content: center;
+
+        img {
+            width: 40%;
+            background-color: white;
+            border-radius: 100%;
+            box-shadow: 0px 4px 15px 0px rgba(0, 0, 0, 0.08);
+        }
+    }
+
+    .cardBody {
+        display: flex;
+        flex-direction: column;
+        justify-content: left;
+        align-items: center;
+        height: 100%;
+
+        h1 {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        p {
+            font-size: 13px;
+            color: #848383;
+        }
+    }
+
+    .cardFooter {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+
+        .cardPrice {
+            font-weight: bold;
+            font-size: 20px;
+        }
+    }
+}
