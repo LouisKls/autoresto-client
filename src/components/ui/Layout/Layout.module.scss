@@ -1,0 +1,56 @@
+.layoutContainer {
+  display: flex;
+  width: 100%;
+  height: 100vh;
+
+  .leftColumn,
+  .rightColumn,
+  .mainContent {
+    transition: all 0.3s ease;
+  }
+
+  .leftColumn {
+    z-index: 1;
+    width: 0;
+    border-top-right-radius: 40px;
+    border-bottom-right-radius: 40px;
+    overflow: hidden;
+    background-color: #fff; // ou autre
+    box-shadow: 2px 0 20px rgba(0, 0, 0, 0.1);
+  }
+
+  .rightColumn {
+    z-index: 1;
+    width: 0;
+    border-top-left-radius: 40px;
+    border-bottom-left-radius: 40px;
+    overflow: hidden;
+    background-color: #fff; // ou autre
+    box-shadow: -2px 0 20px rgba(0, 0, 0, 0.1);
+  }
+
+  .mainContent {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  &.leftMenuOpen {
+    .leftColumn {
+      width: 260px;
+    }
+    .mainContent {
+
+    }
+  }
+
+  &.rightCartOpen {
+    .rightColumn {
+      width: 320px;
+    }
+    .mainContent {
+
+    }
+  }
+}
