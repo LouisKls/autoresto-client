@@ -1,0 +1,41 @@
+.carouselContainer {
+  display: flex;
+  align-items: center;
+  background-color: #fff;
+  padding: 2rem 4rem;
+}
+
+.arrowButton {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  margin: 0 0.5rem;
+}
+
+.subcat {
+  flex: 1;
+  background: none;
+  border: none;
+  margin: 0 0.5rem;
+  text-align: center;
+  cursor: pointer;
+  color: #666;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  img {
+    width: 36px;
+    height: 36px;
+    margin-bottom: 0.25rem;
+  }
+}
+
+.active {
+  color: #f9a826;
+
+  img {
+    filter: drop-shadow(0 0 3px #f9a826);
+  }
+}

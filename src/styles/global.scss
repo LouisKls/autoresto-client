@@ -1,5 +1,13 @@
 @use '@styles/colors.module' as colors;
 
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 * {
   margin: 0;
 }
@@ -37,3 +45,9 @@ p {
 a {
   text-decoration: none;
 }
+
+// Variables
+$primary-color: #f9a826;
+$white: #fff;
+$border-radius: 8px;
+$transition-speed: 0.3s;

@@ -1,0 +1,29 @@
+.header {
+  display: flex;
+  align-items: center;
+  gap: 4rem;
+  background-color: #fff;
+  padding: 2rem 4rem;
+}
+
+.menuToggleBtn,
+.cartToggleBtn {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  margin-right: 0.5rem;
+}
+
+.searchBar {
+  flex: 1;
+
+  input {
+    width: 100%;
+    height: 40px;
+    padding: 0.5rem;
+    background-color: #EEEEEE;
+    border: none;
+    border-radius: 8px;
+  }
+}
