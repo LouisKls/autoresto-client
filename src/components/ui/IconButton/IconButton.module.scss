@@ -24,4 +24,90 @@
     opacity: 0.3;
     cursor: default;
   }
+
+  &.small {
+    padding: 5px;
+    width: 25px;
+    height: 25px;
+  }
+
+  &.primary {
+    background-color: $primary;
+
+    &:hover {
+      background-color: $primary_dark;
+    }
+
+    &:has(.loading.active) {
+      background-color: $primary_light;
+    }
+  }
+
+  &.primaryLight {
+    background-color: $primary_light;
+
+    &:hover {
+      background-color: $primary;
+    }
+  }
+
+  &.danger {
+    background-color: $red_primary;
+
+    &:hover {
+      background-color: $red_dark;
+    }
+
+    &:has(.loading.active) {
+      background-color: $red_light;
+    }
+  }
+
+  &.success {
+    background-color: $green_primary;
+
+    &:hover {
+      background-color: $green_dark;
+    }
+
+    &:has(.loading.active) {
+      background-color: $green_light;
+    }
+  }
+
+  &.grey {
+    background-color: $textLight;
+
+    &:hover {
+      background-color: #707070;
+    }
+
+    &:has(.loading.active) {
+      background-color: #7d7d7dcb;
+    }
+  }
+
+  &.blue {
+    background-color: #2b8cfd;
+
+    &:hover {
+      background-color: #0075ff;
+    }
+
+    &:has(.loading.active) {
+      background-color: #0075ff;
+    }
+  }
+
+  &.orange {
+    background-color: #fea413;
+
+    &:hover {
+      background-color: #f19b12;
+    }
+
+    &:has(.loading.active) {
+      background-color: #f19b12ff;
+    }
+  }
 }
