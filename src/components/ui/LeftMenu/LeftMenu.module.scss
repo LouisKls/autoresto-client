@@ -1,19 +1,24 @@
 .leftMenuContent {
-  padding: 1rem;
+  padding: 2rem;
   height: 100%;
   overflow-y: auto;
 
-  button {
-    background: #ccc;
-    border: none;
-    color: #333;
-    padding: 0.5rem 1rem;
-    border-radius: 8px;
-    cursor: pointer;
-    margin-bottom: 1rem;
+  .leftMenuHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .leftMenuTitle {
+      font-size: 20px;
+    }
+
+    .leftMenuCloseButton {
+
+    }
   }
 
   ul {
+    margin: 20px 0;
     list-style: none;
 
     li {
