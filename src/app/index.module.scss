@@ -1,7 +1,20 @@
 .productsGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
   gap: 70px;
   padding: 4rem 4rem;
   overflow-y: auto;
+}
+
+.subcategoryListBoxContainer {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .subcategoryListBoxWrapper {
+    width: 50%;
+  }
 }

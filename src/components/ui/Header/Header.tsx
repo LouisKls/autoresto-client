@@ -9,12 +9,17 @@ import {
 interface HeaderProps {
   onLeftMenuToggle: () => void;
   onRightCartToggle: () => void;
+  mobile?: boolean;
 }
 
-const Header: React.FC<HeaderProps> = ({ onLeftMenuToggle, onRightCartToggle }) => {
+const Header: React.FC<HeaderProps> = ({ onLeftMenuToggle, onRightCartToggle, mobile }) => {
   return (
-    <header className={styles.header}>
-      <IconButton onClick={onLeftMenuToggle} className={styles.menuToggleBtn} square>
+    <header className={[
+      styles.header,
+      mobile ? styles.mobileHeader : '',
+      ].join(' ')}
+    >
+      <IconButton onClick={onLeftMenuToggle} square>
         <Menu color={"white"} />
       </IconButton>
 
@@ -22,7 +27,7 @@ const Header: React.FC<HeaderProps> = ({ onLeftMenuToggle, onRightCartToggle }) 
         <input type="text" placeholder="Rechercher un produit..." />
       </div>
 
-      <IconButton onClick={onRightCartToggle} className={styles.cartToggleBtn} disabled={false} square>
+      <IconButton onClick={onRightCartToggle} disabled={false} square>
         <ShoppingCart color={"white"} />
       </IconButton>
     </header>

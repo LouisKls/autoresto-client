@@ -1,25 +1,31 @@
 .categoryTabs {
+  box-sizing: border-box;
   display: flex;
   background-color: #fff;
   padding: 0.5rem 4rem;
-}
 
-.tab {
-  flex: 1;
-  font-size: 24px;
-  background: transparent;
-  border: none;
-  padding: 0.5rem 1rem;
-  cursor: pointer;
-  font-weight: 500;
-  color: #666;
-
-  &:hover {
-    //text-decoration: underline;
+  .tab {
+    flex: 1;
+    font-size: 24px;
+    background: transparent;
+    border: none;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    font-weight: 500;
+    color: #666;
+    
+    &.active {
+      color: #f9a826;
+      border-bottom: 2px solid #f9a826;
+    }
+  }
+  
+  &.mobileCategoryTabs {
+    padding: 0px;
+    .tab {
+      font-size: 14px;
+    }
   }
 }
 
-.active {
-  color: #f9a826;
-  border-bottom: 2px solid #f9a826;
-}
+

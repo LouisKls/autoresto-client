@@ -6,15 +6,20 @@ interface CategoryTabsProps {
   categories: Category[];
   selectedCategory: string;
   onSelectCategory: (catId: string) => void;
+  mobile?: boolean;
 }
 
 const CategoryTabs: React.FC<CategoryTabsProps> = ({
                                                      categories,
                                                      selectedCategory,
                                                      onSelectCategory,
+                                                     mobile
                                                    }) => {
   return (
-    <div className={styles.categoryTabs}>
+    <div className={[
+      styles.categoryTabs,
+      mobile ? styles.mobileCategoryTabs : '',
+    ].join(' ')}>
       {categories.map((cat) => (
         <button
           key={cat.id}

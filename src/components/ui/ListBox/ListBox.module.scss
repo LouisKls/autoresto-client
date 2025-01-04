@@ -1,0 +1,47 @@
+@import '@styles/colors.module';
+
+.listBox {
+  position: relative;
+  width: 100%;
+  
+  .button {
+    font-size: 16px;
+    padding: 10px 15px;
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+  }
+}
+
+.listboxDropdown {
+  font-size: 16px;
+  position: absolute;
+  width: 100%;
+  top: 100%;
+  left: 0;
+  background-color: white;
+  border: 1px solid #ddd;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  margin-top: 5px;
+  z-index: 10;
+  
+  .option {
+    padding: 10px 15px;
+    cursor: pointer;
+  }
+  
+  .option:hover {
+    background-color: $grey_sections_background;
+  }
+  
+  .selected {
+    font-weight: bold;
+    color: $primary;
+    background-color: $grey_hover;
+  }
+}
+
+  
