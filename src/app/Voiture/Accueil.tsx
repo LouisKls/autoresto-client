@@ -1,16 +1,21 @@
-'use client';
-
 import React from 'react';
 import ExitCarModeComponent from '@/app/Voiture/ExitCarModeComponent';
 import { useServer } from '@/app/Voiture/ServerContext';
+import { useRouter } from 'next/navigation';
 
 const Accueil: React.FC = () => {
   const { handleOrder } = useServer();
 
+  const router = useRouter();
+
+  const handleClick = () => {
+    handleOrder();
+  };
+
   return (
     <div style={containerStyle}>
       <ExitCarModeComponent containerWidth="90%" />
-      <button style={orderButtonStyle} onClick={handleOrder}>COMMANDER</button>
+      <button style={orderButtonStyle} onClick={handleClick}>COMMANDER</button>
     </div>
   );
 };
