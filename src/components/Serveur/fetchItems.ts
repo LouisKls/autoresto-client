@@ -1,25 +1,24 @@
+import { PRODUCTS } from '@/data/data';
 import React from 'react';
+import { Product } from '@/data/types';
 
 export const fetchItems = async (
   setData: React.Dispatch<React.SetStateAction<any>>,
   setItems: React.Dispatch<React.SetStateAction<any[]>>
 ) => {
   try {
-    const response = await fetch('/items/items.json');
-    const data = await response.json();
+    const data = PRODUCTS;
+    console.log(data);
     setData(data);
 
-    // Merge items from all categories into a single array
-    const allItems = [
-      ...data.items.entrees,
-      ...data.items.plats,
-      ...data.items.desserts,
-      ...data.items.boissons
-    ];
+    // Automatiser la fusion des items
+    const allItems: Product[] = Object.values(data).flatMap((subcategories) =>
+      Object.values(subcategories).flat()
+    );
 
     console.log('allItems : ', allItems);
 
-    setItems(allItems); // Update state with the merged array of items
+    setItems(allItems); // Met à jour l'état avec tous les items fusionnés
   } catch (error) {
     console.error('Erreur lors du chargement des items :', error);
   }
