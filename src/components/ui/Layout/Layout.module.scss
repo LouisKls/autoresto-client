@@ -5,6 +5,7 @@
 
   .leftColumn,
   .rightColumn,
+  .mobileColumn,
   .mainContent {
     transition: all 0.3s ease;
   }
@@ -57,5 +58,9 @@
   // mobile style
   &.mobileLayout {
     width: 100%;
+
+    .mobileColumn {
+      width: 100%;
+    }
   }
 }

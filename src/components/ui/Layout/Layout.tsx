@@ -46,14 +46,32 @@ const Layout: React.FC<LayoutProps> = ({ children, cart = [], onRemoveItem, mobi
         />
       </div>}
 
-      <div className={styles.mainContent}>
-        <Header
-          onLeftMenuToggle={toggleLeftMenu}
-          onRightCartToggle={toggleRightCart}
-          mobile={mobile}
-        />
-        {children}
-      </div>
+      {mobile && isLeftMenuOpen ?
+        <div className={styles.mobileColumn}>
+          <LeftMenu
+            onClose={() => setIsLeftMenuOpen(false)}
+            mobile={true}
+          />
+        </div>
+      : mobile && isRightCartOpen ?
+        <div className={styles.mobileColumn}>
+          <RightCart
+            onClose={() => setIsRightCartOpen(false)}
+            cart={cart}
+            onRemoveItem={onRemoveItem}
+            mobile={true}
+          />
+        </div>
+      :
+        <div className={styles.mainContent}>
+          <Header
+            onLeftMenuToggle={toggleLeftMenu}
+            onRightCartToggle={toggleRightCart}
+            mobile={mobile}
+          />
+          {children}
+        </div>
+      }
 
       {!mobile && <div className={styles.rightColumn}>
         <RightCart
