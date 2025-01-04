@@ -15,15 +15,8 @@ const Serveur: React.FC = () => {
 
   const [itemOrder, setItemOrder] = useState<string[]>([]);
 
-  const [items, setItems] = useState<Item[]>([]);
-  const [data, setData] = useState({
-    items: {
-      entrees: [],
-      plats: [],
-      desserts: [],
-      boissons: []
-    }
-  });
+  const [items, setItems] = useState<Product[]>([]);
+  const [data, setData] = useState();
 
   useEffect(() => {
     loadVoices(setVoices, setSelectedVoice); // Utiliser la fonction importée
