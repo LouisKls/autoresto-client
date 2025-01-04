@@ -1,6 +1,7 @@
 import React from 'react';
 import ExitCarModeComponent from '@/app/Voiture/ExitCarModeComponent';
 import { useItems } from './ItemsContext';
+import { Product } from '@/data/types';
 
 export enum PRODUCT_TYPE {
   ENTREE,
@@ -8,28 +9,59 @@ export enum PRODUCT_TYPE {
   DESSERT
 }
 
+export function getProductTypeString(product_type: PRODUCT_TYPE): string{
+  switch (product_type) {
+    case PRODUCT_TYPE.ENTREE: return 'Entrées';
+    case PRODUCT_TYPE.PLAT: return 'Plats';
+    case PRODUCT_TYPE.DESSERT: return 'Desserts';
+  }
+}
+
 interface Props {
   productType: PRODUCT_TYPE;
 }
 
+const defaultSelectedItems: Product[] = [
+  {
+    id: 1,
+    name: 'Salade César',
+    description: 'Salade romaine, poulet, croûtons, sauce César',
+    price: 8.5,
+    image: '/images/viande.png',
+  },
+  {
+    id: 1,
+    name: 'Salade César',
+    description: 'Salade romaine, poulet, croûtons, sauce César',
+    price: 8.5,
+    image: '/images/viande.png',
+  },
+  {
+    id: 2,
+    name: 'Côte de boeuf',
+    description: 'Côte de boeuf grillée, sauce au poivre',
+    price: 18,
+    image: '/images/cote-boeuf.png',
+  },
+  {
+    id: 3,
+    name: 'Fondant au chocolat',
+    description: 'Cœur coulant, chocolat noir',
+    price: 6,
+    image: '/images/viande.png',
+  },
+];
+
 const ProductChoice: React.FC<Props> = ({ productType }) => {
-  const { selectedItems } = useItems();
+  //const { selectedItems } = useItems();
 
   return (
     <div style={styles.container}>
       <ExitCarModeComponent />
-      <h1 style={styles.title}>{productType}</h1>
-
-      <div style={styles.category}>
-        <button
-          style={styles.categoryButton}>{productType == PRODUCT_TYPE.ENTREE
-          ? 'Entrée'
-          : (productType == PRODUCT_TYPE.PLAT ? 'Plat' : 'Dessert')}
-        </button>
-      </div>
+      <h1 style={styles.title}>{getProductTypeString(productType)}</h1>
 
       <div style={styles.items}>
-        {selectedItems.map((item, index) => (
+        {defaultSelectedItems.map((item, index) => (
           <button key={index} style={styles.item}>
             <img
               src={item.image || 'https://via.placeholder.com/50'}
@@ -54,7 +86,8 @@ const styles: { [key: string]: React.CSSProperties } = {
     padding: '20px',
     backgroundColor: '#fff',
     textAlign: 'center',
-    height: '100vh'
+    height: '100vh',
+    width: '100%'
   },
   quitButton: {
     backgroundColor: '#d9534f',
@@ -71,7 +104,8 @@ const styles: { [key: string]: React.CSSProperties } = {
     marginBottom: '20px'
   },
   category: {
-    marginBottom: '20px'
+    marginBottom: '20px',
+    width: '100%'
   },
   categoryButton: {
     backgroundColor: '#007bff',
@@ -80,12 +114,12 @@ const styles: { [key: string]: React.CSSProperties } = {
     padding: '15px 30px',
     fontSize: '16px',
     borderRadius: '5px',
-    cursor: 'pointer'
+    width: '100%'
   },
   items: {
     display: 'grid',
     gridTemplateColumns: '1fr 1fr',
-    height: '100%',
+    //height: '100%',
     gap: '20px',
     marginBottom: '20px'
   },
