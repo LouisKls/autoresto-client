@@ -1,20 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { loadVoices } from './loadVoices';
 import { fetchItems } from './fetchItems';
-import { handleSpeak } from '@components/Serveur/handleSpeak';
-import { listenResponse } from '@components/Serveur/listenResponse';
-import {
-  continueOrder,
-  handleContinueOrderAnswer,
-  order,
-  quitOrder,
-  restartOrder,
-  startOrder
-} from '@components/Serveur/order';
-import { handleOrderAnswer } from '@components/Serveur/handleOrderAnswer';
-import { courses, restartCourses } from '@components/Serveur/courses';
-import { chooseAnItem } from '@components/Serveur/chooseAnItem';
-import { reservation } from '@components/Serveur/reservation';
 import { Item } from '@components/Serveur/types';
 
 const Serveur: React.FC = () => {

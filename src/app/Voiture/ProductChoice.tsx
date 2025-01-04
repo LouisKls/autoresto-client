@@ -1,58 +1,39 @@
 import React from 'react';
 import ExitCarModeComponent from '@/app/Voiture/ExitCarModeComponent';
-import { FORMULES, PRODUCT_TYPE } from '@/app/Voiture/Formule';
+import { PRODUCT_TYPE } from '@/app/Voiture/Formule';
+import { useItems } from './ItemsContext';
 
-interface props {
-  chosenFormule: FORMULES; // pour savoir quelle formule afficher en haut de la page
-  productType: PRODUCT_TYPE; // va permettre de savoir le titre de la page + quels produits récupérer quand on clique sur "autres"
+interface Props {
+  productType: PRODUCT_TYPE;
 }
 
-const ProductChoice: React.FC<props> = () => {
+const ProductChoice: React.FC<Props> = ({ productType }) => {
+  const { selectedItems } = useItems();
+
   return (
     <div style={styles.container}>
       <ExitCarModeComponent />
-      <h1 style={styles.title}>Entrée</h1>
+      <h1 style={styles.title}>{productType}</h1>
 
       <div style={styles.category}>
-        <button style={styles.categoryButton}>Entrée / Plat / Dessert</button>
+        <button
+          style={styles.categoryButton}>{productType == PRODUCT_TYPE.ENTREE
+          ? 'Entrée'
+          : (productType == PRODUCT_TYPE.PLAT ? 'Plat' : 'Dessert')}
+        </button>
       </div>
 
       <div style={styles.items}>
-        <button style={styles.item}>
-          <img
-            src="https://via.placeholder.com/50"
-            alt="Salade Grec"
-            style={styles.image}
-          />
-          <span>Salade Grec</span>
-        </button>
-
-        <button style={styles.item}>
-          <img
-            src="https://via.placeholder.com/50"
-            alt="Falafels"
-            style={styles.image}
-          />
-          <span>Falafels</span>
-        </button>
-
-        <button style={styles.item}>
-          <img
-            src="https://via.placeholder.com/50"
-            alt="Soupe Turc"
-            style={styles.image}
-          />
-          <span>Soupe Turc</span>
-        </button>
-
-        <button style={styles.item}>
-          <img
-            src="https://via.placeholder.com/50"
-            alt="Onigiri"
-            style={styles.image}
-          />
-          <span>Onigiri</span>
-        </button>
+        {selectedItems.map((item, index) => (
+          <button key={index} style={styles.item}>
+            <img
+              src={item.image || 'https://via.placeholder.com/50'}
+              alt={item.name}
+              style={styles.image}
+            />
+            <span>{item.name}</span>
+          </button>
+        ))}
       </div>
 
       <div style={styles.actions}>

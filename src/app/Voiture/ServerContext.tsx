@@ -26,10 +26,17 @@ interface ServerContextType {
   voices: SpeechSynthesisVoice[];
   selectedVoice: string;
   isListening: boolean;
+  setIsListening: (value: boolean) => void;
   response: string;
+  setResponse: (value: string) => void;
   error: string;
+  setError: (value: string) => void;
   itemOrder: string[];
+  setItemOrder: (value: string[]) => void;
   items: Item[];
+  setItems: (value: Item[]) => void;
+  selectedItems: Item[];
+  setSelectedItems: (items: Item[]) => void;
   data: {
     items: {
       entrees: any[];
@@ -38,6 +45,7 @@ interface ServerContextType {
       boissons: any[];
     };
   };
+  setData: (value: any) => void;
 
   // Fonctions
   handleClickSpeak: (text: string) => Promise<void>;
@@ -47,11 +55,19 @@ interface ServerContextType {
   handleQuitOrder: () => Promise<void>;
   handleOrder: () => Promise<void>;
   handleReservation: () => Promise<void>;
+  handleItemChoice: (response: string) => Promise<void>;
+  startContinueOrder: () => Promise<void>;
+  startCourses: () => Promise<void>;
+  handleRestartCourses: () => Promise<void>;
+  handleCoursesAnswer: (respond: string) => Promise<void>;
+  continueOrderAnswer: (textAnswer: string) => Promise<void>;
+  handleAnswer: (textAnswer: string) => Promise<void>;
 }
 
 const ServerContext = createContext<ServerContextType | undefined>(undefined);
 
 export const ServerProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  // États
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [voices, setVoices] = useState<SpeechSynthesisVoice[]>([]);
   const [selectedVoice, setSelectedVoice] = useState<string>('');
@@ -60,6 +76,7 @@ export const ServerProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   const [error, setError] = useState<string>('');
   const [itemOrder, setItemOrder] = useState<string[]>([]);
   const [items, setItems] = useState<Item[]>([]);
+  const [selectedItems, setSelectedItems] = useState<Item[]>([]);
   const [data, setData] = useState({
     items: {
       entrees: [],
@@ -69,6 +86,7 @@ export const ServerProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     }
   });
 
+  // Effets
   useEffect(() => {
     loadVoices(setVoices, setSelectedVoice);
   }, []);
@@ -83,7 +101,6 @@ export const ServerProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 
   const answer = async () => {
     try {
-      // Wait for response to be captured
       return await listenResponse(setResponse, setError, setIsListening, isSpeaking, setIsSpeaking);
     } catch (error) {
       console.error('Error during speech recognition:', error);
@@ -98,25 +115,28 @@ export const ServerProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     return restartOrder(handleClickSpeak, answer, handleAnswer);
   };
 
-  // Utilisation de quitOrder
   const handleQuitOrder = () => {
     return quitOrder(handleClickSpeak);
   };
 
-
-  const handleAnswer = (textAnswer: string) => {
-    return handleOrderAnswer(textAnswer, startCourses, answer, handleCoursesAnswer, handleRestartOrder, handleQuitOrder);
+  const handleAnswer = async (textAnswer: string) => {
+    return handleOrderAnswer(
+      textAnswer,
+      startCourses,
+      answer,
+      handleCoursesAnswer,
+      handleRestartOrder,
+      handleQuitOrder
+    );
   };
 
   const startCourses = () => {
     return courses(handleClickSpeak);
   };
 
-  // TODO : not used, but the function restartCourses wasn't used neither
   const handleRestartCourses = () => {
     return restartCourses(handleClickSpeak, answer, handleCoursesAnswer);
   };
-
 
   const handleCoursesAnswer = async (respond: string) => {
     if (respond.includes('entrée') || respond.includes('plat') || respond.includes('dessert') || respond.includes('boi')) {
@@ -127,10 +147,18 @@ export const ServerProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   };
 
   const handleItemChoice = (response: string) => {
-    return chooseAnItem(response, data, items, itemOrder, handleClickSpeak, startContinueOrder, answer);
+    return chooseAnItem(
+      response,
+      data,
+      items,
+      itemOrder,
+      handleClickSpeak,
+      startContinueOrder,
+      answer,
+      setSelectedItems
+    );
   };
 
-  // TODO : si ça pète c'est là je pense
   const startContinueOrder = async () => {
     await continueOrder(itemOrder, handleClickSpeak, answer, continueOrderAnswer);
   };
@@ -164,11 +192,19 @@ export const ServerProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     voices,
     selectedVoice,
     isListening,
+    setIsListening,
     response,
+    setResponse,
     error,
+    setError,
     itemOrder,
+    setItemOrder,
     items,
+    setItems,
     data,
+    setData,
+    selectedItems,
+    setSelectedItems,
 
     // Fonctions
     handleClickSpeak,
@@ -177,7 +213,14 @@ export const ServerProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     handleRestartOrder,
     handleQuitOrder,
     handleOrder,
-    handleReservation
+    handleReservation,
+    handleItemChoice,
+    startContinueOrder,
+    startCourses,
+    handleRestartCourses,
+    handleCoursesAnswer,
+    continueOrderAnswer,
+    handleAnswer
   };
 
   return (
@@ -195,3 +238,5 @@ export const useServer = () => {
   }
   return context;
 };
+
+export default ServerProvider;

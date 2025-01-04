@@ -1,13 +1,20 @@
 'use client';
 
 import React from 'react';
-import Serveur from '../../components/Serveur/Serveur';
+import { ServerProvider } from '@/app/Voiture/ServerContext';
+import ProductChoice from '@/app/Voiture/ProductChoice';
+import { PRODUCT_TYPE } from '@/app/Voiture/Formule';
+import { ItemsProvider } from '@/app/Voiture/ItemsContext';
 
 const TestPage = () => {
   return (
-    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-      <Serveur/>
-    </div>
+    <ServerProvider>
+      <ItemsProvider>
+        {/* Vos autres composants */}
+        <ProductChoice productType={PRODUCT_TYPE.ENTREE} />
+        {/* Le composant qui gère la partie vocale */}
+      </ItemsProvider>
+    </ServerProvider>
   );
 };
 
