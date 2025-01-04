@@ -9,7 +9,10 @@ interface ItemsContextType {
 const ItemsContext = createContext<ItemsContextType | undefined>(undefined);
 
 export const ItemsProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [selectedItems, setSelectedItems] = useState<Item[]>([]);
+  const [selectedItems, setSelectedItems] = useState<Item[]>([
+    { name: 'Produit 1', id: 'https://via.placeholder.com/50' },
+    { name: 'Produit 2', id: 'https://via.placeholder.com/50' }
+  ]);
 
   return (
     <ItemsContext.Provider value={{ selectedItems, setSelectedItems }}>

@@ -18,6 +18,7 @@ import { handleOrderAnswer } from '@components/Serveur/handleOrderAnswer';
 import { courses, restartCourses } from '@components/Serveur/courses';
 import { chooseAnItem } from '@components/Serveur/chooseAnItem';
 import { reservation } from '@components/Serveur/reservation';
+import { useRouter } from 'next/navigation';
 
 interface ServerContextType {
   // États
@@ -130,7 +131,10 @@ export const ServerProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     );
   };
 
+  const router = useRouter();
+
   const startCourses = () => {
+    router.push('/productChoice');
     return courses(handleClickSpeak);
   };
 

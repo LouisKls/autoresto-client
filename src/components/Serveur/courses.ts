@@ -1,8 +1,5 @@
-import { router } from 'next/client';
-
 export const courses = async (handleClickSpeak: (text: string) => Promise<void>) => {
   try {
-    router.push('/productChoice');
     await handleClickSpeak('Super! Il te faut une boisson, une entrée, un plat, ou un dessert, mon petit gourmand ?');
   } catch (error) {
     console.error('Error during speaking:', error);
