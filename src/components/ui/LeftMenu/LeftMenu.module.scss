@@ -11,10 +11,6 @@
     .leftMenuTitle {
       font-size: 20px;
     }
-
-    .leftMenuCloseButton {
-
-    }
   }
 
   ul {
@@ -29,5 +25,9 @@
         text-decoration: underline;
       }
     }
+  }
+
+  &.mobileMenu {
+    padding: 0.5rem;
   }
 }

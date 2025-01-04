@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './RightCart.module.scss';
-import { CartItem } from '../../../types';
+import { CartItem } from '../../../data/types';
 import { IconButton } from '@components/ui/IconButton/IconButton';
 import { X, Trash2 } from 'lucide-react';
 import { Button } from '@components/ui/Button/Button';
@@ -9,12 +9,14 @@ interface RightCartProps {
   onClose: () => void;
   cart?: CartItem[];
   onRemoveItem?: (productId: number) => void;
+  mobile?: boolean;
 }
 
 const RightCart: React.FC<RightCartProps> = ({
                                                onClose,
                                                cart = [],
                                                onRemoveItem,
+                                               mobile
                                              }) => {
   const subtotal = cart.reduce(
     (sum, item) => sum + item.product.price * item.quantity,
@@ -22,7 +24,11 @@ const RightCart: React.FC<RightCartProps> = ({
   );
 
   return (
-    <div className={styles.rightCartContent}>
+    <div className={[
+      styles.rightCartContent,
+      mobile ? styles.mobileCart : '',
+      ].join(' ')}
+    >
       <div className={styles.rightCartHeader}>
         <div className={styles.rightCartTitle}>Mon Panier</div>
         <div className={styles.rightCartCloseButton}>

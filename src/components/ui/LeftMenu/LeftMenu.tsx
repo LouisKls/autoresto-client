@@ -5,11 +5,16 @@ import { X } from 'lucide-react';
 
 interface LeftMenuProps {
   onClose: () => void;
+  mobile?: boolean;
 }
 
-const LeftMenu: React.FC<LeftMenuProps> = ({ onClose }) => {
+const LeftMenu: React.FC<LeftMenuProps> = ({ onClose, mobile }) => {
   return (
-    <div className={styles.leftMenuContent}>
+    <div className={[
+      styles.leftMenuContent,
+      mobile ? styles.mobileMenu : '',
+      ].join(' ')}
+    >
       <div className={styles.leftMenuHeader}>
         <div className={styles.leftMenuTitle}>Menu</div>
         <div className={styles.leftMenuCloseButton}>
