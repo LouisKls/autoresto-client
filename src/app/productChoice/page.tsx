@@ -2,8 +2,7 @@
 
 import React from 'react';
 import { ServerProvider } from '@/app/Voiture/ServerContext';
-import ProductChoice from '@/app/Voiture/ProductChoice';
-import { PRODUCT_TYPE } from '@/app/Voiture/Formule';
+import ProductChoice, { PRODUCT_TYPE } from '@/app/Voiture/ProductChoice';
 import { ItemsProvider } from '@/app/Voiture/ItemsContext';
 
 const TestPage = () => {
