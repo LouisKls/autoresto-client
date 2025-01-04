@@ -106,7 +106,7 @@ export const chooseAnItem = async (
 };
 
 // Fonction utilitaire pour obtenir des éléments aléatoires
-const getRandomItems = (category: Product[], count: number): Product[] => {
+export const getRandomItems = (category: Product[], count: number): Product[] => {
   const shuffled = [...category].sort(() => 0.5 - Math.random());
   return shuffled.slice(0, count);
 };
