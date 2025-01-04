@@ -2,6 +2,7 @@ import React from 'react';
 import ExitCarModeComponent from '@/app/Voiture/ExitCarModeComponent';
 import { PRODUCT_TYPE } from '@/app/Voiture/Formule';
 import { useItems } from './ItemsContext';
+import { PRODUCTS } from '@/data/data';
 
 interface Props {
   productType: PRODUCT_TYPE;

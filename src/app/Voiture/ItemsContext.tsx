@@ -1,18 +1,16 @@
 import React, { createContext, useContext, useState } from 'react';
 import { Item } from '@components/Serveur/types';
+import { Product } from '@/data/types';
 
 interface ItemsContextType {
-  selectedItems: Item[];
-  setSelectedItems: (items: Item[]) => void;
+  selectedItems: Product[];
+  setSelectedItems: (items: Product[]) => void;
 }
 
 const ItemsContext = createContext<ItemsContextType | undefined>(undefined);
 
 export const ItemsProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [selectedItems, setSelectedItems] = useState<Item[]>([
-    { name: 'Produit 1', id: 'https://via.placeholder.com/50' },
-    { name: 'Produit 2', id: 'https://via.placeholder.com/50' }
-  ]);
+  const [selectedItems, setSelectedItems] = useState<Product[]>([]);
 
   return (
     <ItemsContext.Provider value={{ selectedItems, setSelectedItems }}>

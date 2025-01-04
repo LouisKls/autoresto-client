@@ -1,34 +1,43 @@
 import Fuse from 'fuse.js';
 import { Item } from './types';
+import { Product } from '@/data/types';
 
 export const chooseAnItem = async (
   response: string,
-  data: any,
-  items: Item[],
+  data: Record<string, Record<string, Product[]>>,
+  items: Product[],
   itemOrder: string[],
   handleClickSpeak: (text: string) => Promise<void>,
   continueOrder: () => Promise<void>,
   answer: () => Promise<string | undefined>,
-  setSelectedItems: (items: Item[]) => void
+  setSelectedItems: (items: Product[]) => void
 ): Promise<void> => {
   // Définition des catégories disponibles
   const categories = {
-    entree: data.items.entrees,
-    plat: data.items.plats,
-    dessert: data.items.desserts,
-    boisson: data.items.boissons
+    entree: data['entrees'],
+    plat: data['plats'],
+    dessert: data['desserts'],
+    boisson: data['boissons']
   };
 
   // Détermination de la catégorie choisie
-  let chosenCategory: Item[] | undefined;
+  let chosenCategory: Product[] | undefined;
   if (response.includes('entrée')) {
-    chosenCategory = categories.entree;
+    chosenCategory = Object.values(categories.entree).flatMap((subcategories) =>
+      Object.values(subcategories).flat()
+    );
   } else if (response.includes('plat')) {
-    chosenCategory = categories.plat;
+    chosenCategory = Object.values(categories.plat).flatMap((subcategories) =>
+      Object.values(subcategories).flat()
+    );
   } else if (response.includes('dessert')) {
-    chosenCategory = categories.dessert;
+    chosenCategory = Object.values(categories.dessert).flatMap((subcategories) =>
+      Object.values(subcategories).flat()
+    );
   } else if (response.includes('boi')) {
-    chosenCategory = categories.boisson;
+    chosenCategory = Object.values(categories.boisson).flatMap((subcategories) =>
+      Object.values(subcategories).flat()
+    );
   }
 
   if (chosenCategory) {
@@ -97,16 +106,16 @@ export const chooseAnItem = async (
 };
 
 // Fonction utilitaire pour obtenir des éléments aléatoires
-const getRandomItems = (category: Item[], count: number): Item[] => {
+const getRandomItems = (category: Product[], count: number): Product[] => {
   const shuffled = [...category].sort(() => 0.5 - Math.random());
   return shuffled.slice(0, count);
 };
 
 // Fonction pour la lecture vocale des choix
 const itemChoice = async (
-  items: Item[],
+  items: Product[],
   handleClickSpeak: (text: string) => Promise<void>,
-  setSelectedItems: (items: Item[]) => void
+  setSelectedItems: (items: Product[]) => void
 ): Promise<void> => {
   try {
     setSelectedItems(items);

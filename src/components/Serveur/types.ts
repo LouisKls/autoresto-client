@@ -1,4 +1,4 @@
-export type Item = {
+/*export type Item = {
   id: string;
   name: string;
   price?: number;
@@ -6,4 +6,4 @@ export type Item = {
   type?: string; // TODO: delete ? from every field
   allergene?: string;
   description?: string;
-};
+};*/

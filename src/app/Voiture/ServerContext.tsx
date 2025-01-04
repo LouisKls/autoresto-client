@@ -1,7 +1,7 @@
 'use client';
 
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { Item } from '@components/Serveur/types';
+
 import { loadVoices } from '@components/Serveur/loadVoices';
 import { fetchItems } from '@components/Serveur/fetchItems';
 import { handleSpeak } from '@components/Serveur/handleSpeak';
@@ -19,6 +19,7 @@ import { courses, restartCourses } from '@components/Serveur/courses';
 import { chooseAnItem } from '@components/Serveur/chooseAnItem';
 import { reservation } from '@components/Serveur/reservation';
 import { useRouter } from 'next/navigation';
+import { Product } from '@/data/types';
 
 interface ServerContextType {
   // États
@@ -34,17 +35,37 @@ interface ServerContextType {
   setError: (value: string) => void;
   itemOrder: string[];
   setItemOrder: (value: string[]) => void;
-  items: Item[];
-  setItems: (value: Item[]) => void;
-  selectedItems: Item[];
-  setSelectedItems: (items: Item[]) => void;
+  items: Product[];
+  setItems: (value: Product[]) => void;
+  selectedItems: Product[];
+  setSelectedItems: (items: Product[]) => void;
   data: {
-    items: {
-      entrees: any[];
-      plats: any[];
-      desserts: any[];
-      boissons: any[];
-    };
+    entrees: {
+      salades: [],
+      soupes: [],
+      tapas: [],
+    },
+    plats: {
+      viandes: [],
+      poissons: [],
+      pates: [],
+      burgers: [],
+      pizzas: [],
+      vegetarien: [],
+      risottos: [],
+      woks: [],
+      tacos: [],
+    },
+    desserts: {
+      gateaux: [],
+      glaces: [],
+      fruits: [],
+    },
+    boissons: {
+      softs: [],
+      alcools: [],
+      cafe_the: [],
+    },
   };
   setData: (value: any) => void;
 
@@ -76,15 +97,35 @@ export const ServerProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   const [response, setResponse] = useState<string>('');
   const [error, setError] = useState<string>('');
   const [itemOrder, setItemOrder] = useState<string[]>([]);
-  const [items, setItems] = useState<Item[]>([]);
-  const [selectedItems, setSelectedItems] = useState<Item[]>([]);
+  const [items, setItems] = useState<Product[]>([]);
+  const [selectedItems, setSelectedItems] = useState<Product[]>([]);
   const [data, setData] = useState({
-    items: {
-      entrees: [],
-      plats: [],
-      desserts: [],
-      boissons: []
-    }
+    entrees: {
+      salades: [],
+      soupes: [],
+      tapas: [],
+    },
+    plats: {
+      viandes: [],
+      poissons: [],
+      pates: [],
+      burgers: [],
+      pizzas: [],
+      vegetarien: [],
+      risottos: [],
+      woks: [],
+      tacos: [],
+    },
+    desserts: {
+      gateaux: [],
+      glaces: [],
+      fruits: [],
+    },
+    boissons: {
+      softs: [],
+      alcools: [],
+      cafe_the: [],
+    },
   });
 
   // Effets
