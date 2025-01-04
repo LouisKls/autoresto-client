@@ -2,7 +2,7 @@ import React, { useState, ReactNode } from 'react';
 import Header from '../Header/Header';
 import LeftMenu from '../LeftMenu/LeftMenu';
 import RightCart from '../RightCart/RightCart';
-import { CartItem } from '../../../types';
+import { CartItem } from '../../../data/types';
 
 import styles from './Layout.module.scss';
 
@@ -10,9 +10,10 @@ interface LayoutProps {
   children: ReactNode;
   cart?: CartItem[];
   onRemoveItem?: (productId: number) => void;
+  mobile?: boolean;
 }
 
-const Layout: React.FC<LayoutProps> = ({ children, cart = [], onRemoveItem }) => {
+const Layout: React.FC<LayoutProps> = ({ children, cart = [], onRemoveItem, mobile }) => {
   const [isLeftMenuOpen, setIsLeftMenuOpen] = useState(false);
   const [isRightCartOpen, setIsRightCartOpen] = useState(false);
 
@@ -36,29 +37,31 @@ const Layout: React.FC<LayoutProps> = ({ children, cart = [], onRemoveItem }) =>
         styles.layoutContainer,
         isLeftMenuOpen ? styles.leftMenuOpen : '',
         isRightCartOpen ? styles.rightCartOpen : '',
+        mobile ? styles.mobileLayout : '',
       ].join(' ')}
     >
-      <div className={styles.leftColumn}>
+      {!mobile && <div className={styles.leftColumn}>
         <LeftMenu
           onClose={() => setIsLeftMenuOpen(false)}
         />
-      </div>
+      </div>}
 
       <div className={styles.mainContent}>
         <Header
           onLeftMenuToggle={toggleLeftMenu}
           onRightCartToggle={toggleRightCart}
+          mobile={mobile}
         />
         {children}
       </div>
 
-      <div className={styles.rightColumn}>
+      {!mobile && <div className={styles.rightColumn}>
         <RightCart
           onClose={() => setIsRightCartOpen(false)}
           cart={cart}
           onRemoveItem={onRemoveItem}
         />
-      </div>
+      </div>}
     </div>
   );
 };
