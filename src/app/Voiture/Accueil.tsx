@@ -1,12 +1,9 @@
 import React from 'react';
 import ExitCarModeComponent from '@/app/Voiture/ExitCarModeComponent';
 import { useServer } from '@/app/Voiture/ServerContext';
-import { useRouter } from 'next/navigation';
 
 const Accueil: React.FC = () => {
   const { handleOrder } = useServer();
-
-  const router = useRouter();
 
   const handleClick = () => {
     handleOrder();

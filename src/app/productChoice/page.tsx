@@ -10,9 +10,8 @@ const TestPage = () => {
   return (
     <ServerProvider>
       <ItemsProvider>
-        {/* Vos autres composants */}
         <ProductChoice productType={PRODUCT_TYPE.ENTREE} />
-        {/* Le composant qui gère la partie vocale */}
+
       </ItemsProvider>
     </ServerProvider>
   );
