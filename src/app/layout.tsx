@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import '@styles/global.scss';
+import ServerProvider from '@/app/Voiture/ServerContext';
+import { ReservationProvider } from '@/app/Voiture/ReservationHourContext';
 
 
 const inter = Inter({ subsets: ['latin'] })
@@ -18,7 +20,9 @@ export default function RootLayout({
   return (
     <html lang="en" className={inter.className}>
       <body>
+      <ServerProvider>
           {children}
+      </ServerProvider>
       </body>
     </html>
   );

@@ -30,10 +30,8 @@ interface Props {
 }
 
 const ProductChoice: React.FC<Props> = ({ productType }) => {
-  const { 
-    data, 
-    selectedItems, 
-    setSelectedItems, 
+  const {
+    selectedItems,
     itemOrder, 
     setItemOrder,
     isSpeaking,
@@ -48,30 +46,6 @@ const ProductChoice: React.FC<Props> = ({ productType }) => {
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
-
-  useEffect(() => {
-    let products: Product[] = [];
-    switch (productType) {
-      case PRODUCT_TYPE.ENTREE:
-        products = Object.values(data.entrees).flat();
-        break;
-      case PRODUCT_TYPE.PLAT:
-        products = Object.values(data.plats).flat();
-        break;
-      case PRODUCT_TYPE.DESSERT:
-        products = Object.values(data.desserts).flat();
-        break;
-      case PRODUCT_TYPE.BOISSON:
-        products = Object.values(data.boissons).flat();
-        break;
-    }
-
-    const randomProducts = products
-      .sort(() => 0.5 - Math.random())
-      .slice(0, 4);
-    
-    setSelectedItems(randomProducts);
-  }, [productType, data, setSelectedItems]);
 
   const handleAddToOrder = (item: Product) => {
     setItemOrder([...itemOrder, item]);
