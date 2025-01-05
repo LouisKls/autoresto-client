@@ -61,12 +61,12 @@ const defaultSelectedItems: Product[] = [
 
 const ProductChoice: React.FC<Props> = ({ productType }) => {
 
-  const { selectedItems } = useItems();
+  const { selectedItems } = useServer();
   const { itemOrder, setItemOrder } = useServer();
 
 
   const handleAddToOrder = (item: Product) => {
-    setItemOrder([...itemOrder, item]); // Ajoute le nouvel élément au tableau
+    setItemOrder([...itemOrder, item]);
   };
 
   const handleCancel = () => {
@@ -86,7 +86,7 @@ const ProductChoice: React.FC<Props> = ({ productType }) => {
       <h1 style={styles.title}>{getProductTypeString(productType)}</h1>
 
       <div style={styles.items}>
-        {defaultSelectedItems.map((item, index) => (
+        {selectedItems.map((item, index) => (
           <button key={index} style={styles.item}>
             <img
               src={item.image || 'https://via.placeholder.com/50'}
