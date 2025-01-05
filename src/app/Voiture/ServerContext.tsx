@@ -211,7 +211,7 @@ export const ServerProvider: React.FC<{ children: React.ReactNode }> = ({ childr
       startContinueOrder,
       answer,
       (newItems) => {
-        console.log("Setting new items in ServerProvider:", newItems);
+        console.log('Setting new items in ServerProvider:', newItems);
         setSelectedItems(newItems);
       }
     );
@@ -219,6 +219,10 @@ export const ServerProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 
   const startContinueOrder = async () => {
     await continueOrder(itemOrder, handleClickSpeak, answer, continueOrderAnswer);
+  };
+
+  const finishOrder = () => {
+    router.push('/recap');
   };
 
   const continueOrderAnswer = async (textAnswer: string) => {
@@ -236,7 +240,8 @@ export const ServerProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   };
 
   const handleReservation = () => {
-    return reservation(handleClickSpeak, answer);
+    router.push('/reservation');
+    return reservation(handleClickSpeak, answer, finishOrder);
   };
 
   const handleOrder = () => {
