@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import ExitCarModeComponent from '@/app/Voiture/ExitCarModeComponent';
-import { useItems } from './ItemsContext';
 import { Product } from '@/data/types';
 import { useServer } from '@/app/Voiture/ServerContext';
+import styles from './Accueil.module.scss';
+import RightCart from '@/components/ui/RightCart/RightCart';
 
 export enum PRODUCT_TYPE {
   ENTREE,
@@ -28,170 +29,247 @@ interface Props {
   productType: PRODUCT_TYPE;
 }
 
-const defaultSelectedItems: Product[] = [
-  {
-    id: 1,
-    name: 'Salade César',
-    description: 'Salade romaine, poulet, croûtons, sauce César',
-    price: 8.5,
-    image: '/images/viande.png'
-  },
-  {
-    id: 1,
-    name: 'Salade César',
-    description: 'Salade romaine, poulet, croûtons, sauce César',
-    price: 8.5,
-    image: '/images/viande.png'
-  },
-  {
-    id: 2,
-    name: 'Côte de boeuf',
-    description: 'Côte de boeuf grillée, sauce au poivre',
-    price: 18,
-    image: '/images/cote-boeuf.png'
-  },
-  {
-    id: 3,
-    name: 'Fondant au chocolat',
-    description: 'Cœur coulant, chocolat noir',
-    price: 6,
-    image: '/images/viande.png'
-  }
-];
-
 const ProductChoice: React.FC<Props> = ({ productType }) => {
+  const { 
+    data, 
+    selectedItems, 
+    setSelectedItems, 
+    itemOrder, 
+    setItemOrder,
+    isSpeaking,
+    isListening
+  } = useServer();
 
-  const { selectedItems } = useServer();
-  const { itemOrder, setItemOrder } = useServer();
+  const [isCartOpen, setIsCartOpen] = useState(false);
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
+  useEffect(() => {
+    const handleResize = () => setWindowWidth(window.innerWidth);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  useEffect(() => {
+    let products: Product[] = [];
+    switch (productType) {
+      case PRODUCT_TYPE.ENTREE:
+        products = Object.values(data.entrees).flat();
+        break;
+      case PRODUCT_TYPE.PLAT:
+        products = Object.values(data.plats).flat();
+        break;
+      case PRODUCT_TYPE.DESSERT:
+        products = Object.values(data.desserts).flat();
+        break;
+      case PRODUCT_TYPE.BOISSON:
+        products = Object.values(data.boissons).flat();
+        break;
+    }
+
+    const randomProducts = products
+      .sort(() => 0.5 - Math.random())
+      .slice(0, 4);
+    
+    setSelectedItems(randomProducts);
+  }, [productType, data, setSelectedItems]);
 
   const handleAddToOrder = (item: Product) => {
     setItemOrder([...itemOrder, item]);
+    setIsCartOpen(true);
   };
 
-  const handleCancel = () => {
-    if (itemOrder.length > 0) {
-      const updatedOrder = itemOrder.slice(0, -1);
-      setItemOrder(updatedOrder);
-      console.log(itemOrder);
-    } else {
-      console.log('La commande est déjà vide !');
-    }
+  const handleRemoveFromCart = (productId: number) => {
+    const newOrder = itemOrder.filter(item => item.id !== productId);
+    setItemOrder(newOrder);
   };
 
+  const isMobile = windowWidth <= 768;
 
   return (
-    <div style={styles.container}>
-      <ExitCarModeComponent />
-      <h1 style={styles.title}>{getProductTypeString(productType)}</h1>
+    <div style={containerStyle}>
+      <ExitCarModeComponent containerWidth="90%" />
+      
+      <div style={statusContainer}>
+        {isSpeaking && (
+          <div style={statusIndicator} className={styles.statusIndicator}>
+            🔊 Le serveur parle...
+          </div>
+        )}
+        {isListening && (
+          <div style={statusIndicator} className={styles.statusIndicator}>
+            🎤 En écoute...
+          </div>
+        )}
+      </div>
 
-      <div style={styles.items}>
+      <div style={headerContainer}>
+        <h1 style={title}>{getProductTypeString(productType)}</h1>
+        <p style={subtitle}>Sélectionnez un plat ou utilisez les commandes vocales</p>
+      </div>
+
+      <div style={itemsGrid}>
         {selectedItems.map((item, index) => (
-          <button key={index} style={styles.item}>
-            <img
-              src={item.image || 'https://via.placeholder.com/50'}
-              alt={item.name}
-              style={styles.image}
-              onClick={() => handleAddToOrder(item)}
-            />
-            <span>{item.name}</span>
+          <button 
+            key={index} 
+            style={itemCard} 
+            className={styles.orderButton}
+            onClick={() => handleAddToOrder(item)}
+          >
+            <div style={itemInfo}>
+              <span style={itemName}>{item.name}</span>
+              <span style={itemPrice}>{item.price.toFixed(2)} €</span>
+            </div>
           </button>
         ))}
       </div>
 
-      <div style={styles.actions}>
-        <button style={styles.actionButton}>AUTRES</button>
-        <button style={styles.backButton} onClick={() => handleCancel()}>ANNULER DERNIER ARTICLE</button>
+      <div style={instructionsContainer}>
+        <div style={instructionBox} className={styles.instructionBox}>
+          <span style={instructionIcon}>🔄</span>
+          <span style={instructionText}>Dites "Autres" pour voir d'autres choix</span>
+        </div>
+        <div style={instructionBox} className={styles.instructionBox}>
+          <span style={instructionIcon}>❌</span>
+          <span style={instructionText}>Dites "Annuler" pour supprimer le dernier article</span>
+        </div>
       </div>
+
+      {isCartOpen && (
+        <div style={{
+          ...cartOverlay,
+          width: isMobile ? '100%' : '400px'
+        }}>
+          <RightCart
+            onClose={() => setIsCartOpen(false)}
+            cart={itemOrder.map(product => ({ product, quantity: 1 }))}
+            onRemoveItem={handleRemoveFromCart}
+          />
+        </div>
+      )}
     </div>
   );
 };
 
-const styles: { [key: string]: React.CSSProperties } = {
-  container: {
-    padding: '20px',
-    backgroundColor: '#fff',
-    textAlign: 'center',
-    height: '100vh',
-    width: '100%'
-  },
-  quitButton: {
-    backgroundColor: '#d9534f',
-    color: '#fff',
-    border: 'none',
-    padding: '10px 20px',
-    fontSize: '16px',
-    cursor: 'pointer',
-    marginBottom: '20px'
-  },
-  title: {
-    fontSize: '24px',
-    fontWeight: 'bold',
-    marginBottom: '20px'
-  },
-  category: {
-    marginBottom: '20px',
-    width: '100%'
-  },
-  categoryButton: {
-    backgroundColor: '#007bff',
-    color: '#ffffff',
-    border: 'none',
-    padding: '15px 30px',
-    fontSize: '16px',
-    borderRadius: '5px',
-    width: '100%'
-  },
-  items: {
-    display: 'grid',
-    gridTemplateColumns: '1fr 1fr',
-    //height: '100%',
-    gap: '20px',
-    marginBottom: '20px'
-  },
-  item: {
-    backgroundColor: '#007bff',
-    color: '#fff',
-    border: 'none',
-    padding: '15px',
-    fontSize: '14px',
-    borderRadius: '5px',
-    cursor: 'pointer',
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center'
-  },
-  image: {
-    width: '50px',
-    height: '50px',
-    marginBottom: '10px'
-  },
-  actions: {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-    gap: '8px'
-  },
-  actionButton: {
-    backgroundColor: '#007bff',
-    color: '#fff',
-    border: 'none',
-    padding: '10px 20px',
-    fontSize: '16px',
-    borderRadius: '5px',
-    cursor: 'pointer',
-    flex: 1
-  },
-  backButton: {
-    backgroundColor: '#d9534f',
-    color: '#fff',
-    border: 'none',
-    padding: '10px 20px',
-    fontSize: '16px',
-    borderRadius: '5px',
-    cursor: 'pointer',
-    flex: 1
-  }
+const containerStyle: React.CSSProperties = {
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  minHeight: '100vh',
+  backgroundColor: '#f5f5f5',
+  padding: '20px',
+  position: 'relative'
+};
+
+const statusContainer: React.CSSProperties = {
+  width: '90%',
+  marginBottom: '20px',
+  display: 'flex',
+  justifyContent: 'center',
+  gap: '10px'
+};
+
+const statusIndicator: React.CSSProperties = {
+  backgroundColor: '#4CAF50',
+  color: 'white',
+  padding: '10px 20px',
+  borderRadius: '20px',
+  fontSize: '18px'
+};
+
+const headerContainer: React.CSSProperties = {
+  textAlign: 'center',
+  marginBottom: '20px',
+  width: '90%'
+};
+
+const title: React.CSSProperties = {
+  fontSize: '28px',
+  color: '#1976d2',
+  marginBottom: '8px'
+};
+
+const subtitle: React.CSSProperties = {
+  fontSize: '16px',
+  color: '#666'
+};
+
+const itemsGrid: React.CSSProperties = {
+  display: 'grid',
+  gridTemplateColumns: '1fr 1fr',
+  gap: '15px',
+  width: '90%',
+  marginBottom: '20px'
+};
+
+const itemCard: React.CSSProperties = {
+  backgroundColor: 'white',
+  border: 'none',
+  borderRadius: '10px',
+  padding: '12px',
+  cursor: 'pointer',
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+  transition: 'transform 0.2s ease',
+  minHeight: '80px'
+};
+
+const itemInfo: React.CSSProperties = {
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  gap: '5px',
+  padding: '8px'
+};
+
+const itemName: React.CSSProperties = {
+  fontSize: '16px',
+  fontWeight: 'bold',
+  color: '#333',
+  textAlign: 'center'
+};
+
+const itemPrice: React.CSSProperties = {
+  fontSize: '14px',
+  color: '#1976d2',
+  fontWeight: 'bold'
+};
+
+const instructionsContainer: React.CSSProperties = {
+  width: '90%',
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '10px'
+};
+
+const instructionBox: React.CSSProperties = {
+  backgroundColor: 'white',
+  padding: '12px',
+  borderRadius: '10px',
+  display: 'flex',
+  alignItems: 'center',
+  gap: '10px',
+  boxShadow: '0 2px 4px rgba(0, 0, 0, 0.05)'
+};
+
+const instructionIcon: React.CSSProperties = {
+  fontSize: '20px'
+};
+
+const instructionText: React.CSSProperties = {
+  fontSize: '14px',
+  color: '#333'
+};
+
+const cartOverlay: React.CSSProperties = {
+  position: 'fixed',
+  top: 0,
+  right: 0,
+  bottom: 0,
+  backgroundColor: 'white',
+  boxShadow: '-2px 0 5px rgba(0, 0, 0, 0.1)',
+  zIndex: 1000
 };
 
 export default ProductChoice;
