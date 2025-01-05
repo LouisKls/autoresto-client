@@ -79,7 +79,7 @@ export const chooseAnItem = async (
       if (results.length > 0) {
         const matchedKeyword = results[0].item;
         console.log(`Matched item: ${matchedKeyword.name}`);
-        itemOrder.push(matchedKeyword.name);
+        itemOrder.push(matchedKeyword);
         await handleClickSpeak('Parfait ! C\'est enregistré !');
         await continueOrder();
       } else {
