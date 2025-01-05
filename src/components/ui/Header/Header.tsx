@@ -3,8 +3,10 @@ import styles from './Header.module.scss';
 import { IconButton } from '@components/ui/IconButton/IconButton';
 import {
   ShoppingCart,
-  Menu
+  Menu,
+  Car
 } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 interface HeaderProps {
   onLeftMenuToggle: () => void;
@@ -13,6 +15,12 @@ interface HeaderProps {
 }
 
 const Header: React.FC<HeaderProps> = ({ onLeftMenuToggle, onRightCartToggle, mobile }) => {
+  const router = useRouter();
+
+  const handleCarMode = () => {
+    router.push('/accueil');
+  };
+
   return (
     <header className={[
       styles.header,
@@ -27,9 +35,14 @@ const Header: React.FC<HeaderProps> = ({ onLeftMenuToggle, onRightCartToggle, mo
         <input type="text" placeholder="Rechercher un produit..." />
       </div>
 
-      <IconButton onClick={onRightCartToggle} disabled={false} square>
-        <ShoppingCart color={"white"} />
-      </IconButton>
+      <div className={styles.rightButtons}>
+        <IconButton onClick={handleCarMode} square>
+          <Car color={"white"} />
+        </IconButton>
+        <IconButton onClick={onRightCartToggle} disabled={false} square>
+          <ShoppingCart color={"white"} />
+        </IconButton>
+      </div>
     </header>
   );
 };
