@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import ExitCarModeComponent from '@/app/Voiture/ExitCarModeComponent';
-import { Product } from '@/data/types';
+import { CartItem, Product } from '@/data/types';
 import { useServer } from '@/app/Voiture/ServerContext';
 import styles from './Accueil.module.scss';
 import RightCart from '@/components/ui/RightCart/RightCart';
@@ -59,6 +59,8 @@ const ProductChoice: React.FC<Props> = ({ productType }) => {
 
   const isMobile = windowWidth <= 768;
 
+  const cartItems = itemOrder.map(product => ({ product, quantity: 1 })) as CartItem[];
+
   return (
     <div style={containerStyle}>
       <ExitCarModeComponent containerWidth="90%" />
@@ -115,7 +117,7 @@ const ProductChoice: React.FC<Props> = ({ productType }) => {
         }}>
           <RightCart
             onClose={() => setIsCartOpen(false)}
-            cart={itemOrder.map(product => ({ product, quantity: 1 }))}
+            cart={itemOrder.length > 0 ? cartItems : undefined}
             onRemoveItem={handleRemoveFromCart}
           />
         </div>

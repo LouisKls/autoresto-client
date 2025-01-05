@@ -1,8 +1,5 @@
 import Fuse from 'fuse.js';
 import { Product } from '@/data/types';
-import { PRODUCT_TYPE } from '@/app/Voiture/ProductChoice';
-import { useNavigate } from 'react-router';
-
 
 export const chooseAnItem = async (
   response: string,

@@ -1,9 +1,10 @@
 import React from 'react';
 import styles from './RightCart.module.scss';
-import { CartItem } from '../../../data/types';
+
 import { IconButton } from '@components/ui/IconButton/IconButton';
 import { X, Trash2 } from 'lucide-react';
 import { Button } from '@components/ui/Button/Button';
+import { CartItem } from '@/data/types';
 
 interface RightCartProps {
   onClose: () => void;

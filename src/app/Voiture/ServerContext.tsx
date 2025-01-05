@@ -222,10 +222,6 @@ export const ServerProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     await continueOrder(itemOrder, handleClickSpeak, answer, continueOrderAnswer);
   };
 
-  const finishOrder = () => {
-    router.push('/recap');
-  };
-
   const continueOrderAnswer = async (textAnswer: string) => {
     await handleContinueOrderAnswer(
       textAnswer,
@@ -256,6 +252,7 @@ export const ServerProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   };
 
   const handleOrder = () => {
+    console.log(itemOrder);
     return order(handleStartOrder, answer, handleAnswer, handleRestartOrder);
   };
 
