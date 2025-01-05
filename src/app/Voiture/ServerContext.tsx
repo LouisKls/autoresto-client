@@ -21,6 +21,7 @@ import { reservation } from '@components/Serveur/reservation';
 import { useRouter } from 'next/navigation';
 import { Product } from '@/data/types';
 import { PRODUCT_TYPE } from '@/app/Voiture/ProductChoice';
+import { useReservation } from '@/app/Voiture/ReservationHourContext';
 
 interface ServerContextType {
   // États
@@ -239,9 +240,19 @@ export const ServerProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     );
   };
 
+  const { setHour, setMinute } = useReservation();
+
   const handleReservation = () => {
     router.push('/reservation');
-    return reservation(handleClickSpeak, answer, finishOrder);
+    return reservation(
+      handleClickSpeak,
+      answer,
+      (hour: number, minute: number) => {
+        setHour(hour);
+        setMinute(minute);
+        router.push('/recap');
+      }
+    );
   };
 
   const handleOrder = () => {
@@ -249,7 +260,6 @@ export const ServerProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   };
 
   const value = {
-    // États
     isSpeaking,
     setIsSpeaking,
     voices,

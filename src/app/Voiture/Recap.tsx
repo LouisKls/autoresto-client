@@ -27,7 +27,7 @@ const Recap: React.FC = () => {
 
       <div style={infoBox}>
         <span style={products}>🍙 Entrée / 🍕 Plat / 🍏 Dessert</span>
-        <span style={price}>{getPriceToPay} €</span>
+        <span style={price}>{getPriceToPay()} €</span>
       </div>
 
       <h1 style={reservationHour}>{hour}:{minute}</h1>
