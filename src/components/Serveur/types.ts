@@ -3,7 +3,7 @@
   name: string;
   price?: number;
   image?: string;
-  type?: string; // TODO: delete ? from every field
+  type?: string;
   allergene?: string;
   description?: string;
 };*/

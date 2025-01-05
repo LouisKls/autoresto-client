@@ -7,14 +7,20 @@ import { useServer } from '@/app/Voiture/ServerContext';
 export enum PRODUCT_TYPE {
   ENTREE,
   PLAT,
-  DESSERT
+  DESSERT,
+  BOISSON
 }
 
-export function getProductTypeString(product_type: PRODUCT_TYPE): string{
+export function getProductTypeString(product_type: PRODUCT_TYPE): string {
   switch (product_type) {
-    case PRODUCT_TYPE.ENTREE: return 'Entrées';
-    case PRODUCT_TYPE.PLAT: return 'Plats';
-    case PRODUCT_TYPE.DESSERT: return 'Desserts';
+    case PRODUCT_TYPE.ENTREE:
+      return 'Entrées';
+    case PRODUCT_TYPE.PLAT:
+      return 'Plats';
+    case PRODUCT_TYPE.DESSERT:
+      return 'Desserts';
+    case PRODUCT_TYPE.BOISSON:
+      return 'Boissons';
   }
 }
 
@@ -28,38 +34,51 @@ const defaultSelectedItems: Product[] = [
     name: 'Salade César',
     description: 'Salade romaine, poulet, croûtons, sauce César',
     price: 8.5,
-    image: '/images/viande.png',
+    image: '/images/viande.png'
   },
   {
     id: 1,
     name: 'Salade César',
     description: 'Salade romaine, poulet, croûtons, sauce César',
     price: 8.5,
-    image: '/images/viande.png',
+    image: '/images/viande.png'
   },
   {
     id: 2,
     name: 'Côte de boeuf',
     description: 'Côte de boeuf grillée, sauce au poivre',
     price: 18,
-    image: '/images/cote-boeuf.png',
+    image: '/images/cote-boeuf.png'
   },
   {
     id: 3,
     name: 'Fondant au chocolat',
     description: 'Cœur coulant, chocolat noir',
     price: 6,
-    image: '/images/viande.png',
-  },
+    image: '/images/viande.png'
+  }
 ];
 
 const ProductChoice: React.FC<Props> = ({ productType }) => {
-  //const { selectedItems } = useItems();
-  const { itemOrder, setItemOrder } = useServer(); // TODO : change itemOrder de string à Product
+
+  const { selectedItems } = useItems();
+  const { itemOrder, setItemOrder } = useServer();
+
 
   const handleAddToOrder = (item: Product) => {
     setItemOrder([...itemOrder, item]); // Ajoute le nouvel élément au tableau
   };
+
+  const handleCancel = () => {
+    if (itemOrder.length > 0) {
+      const updatedOrder = itemOrder.slice(0, -1);
+      setItemOrder(updatedOrder);
+      console.log(itemOrder);
+    } else {
+      console.log('La commande est déjà vide !');
+    }
+  };
+
 
   return (
     <div style={styles.container}>
@@ -82,7 +101,7 @@ const ProductChoice: React.FC<Props> = ({ productType }) => {
 
       <div style={styles.actions}>
         <button style={styles.actionButton}>AUTRES</button>
-        <button style={styles.backButton}>RETOUR</button>
+        <button style={styles.backButton} onClick={() => handleCancel()}>ANNULER DERNIER ARTICLE</button>
       </div>
     </div>
   );

@@ -20,6 +20,7 @@ import { chooseAnItem } from '@components/Serveur/chooseAnItem';
 import { reservation } from '@components/Serveur/reservation';
 import { useRouter } from 'next/navigation';
 import { Product } from '@/data/types';
+import { PRODUCT_TYPE } from '@/app/Voiture/ProductChoice';
 
 interface ServerContextType {
   // États
@@ -103,7 +104,7 @@ export const ServerProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     entrees: {
       salades: [],
       soupes: [],
-      tapas: [],
+      tapas: []
     },
     plats: {
       viandes: [],
@@ -114,18 +115,18 @@ export const ServerProvider: React.FC<{ children: React.ReactNode }> = ({ childr
       vegetarien: [],
       risottos: [],
       woks: [],
-      tacos: [],
+      tacos: []
     },
     desserts: {
       gateaux: [],
       glaces: [],
-      fruits: [],
+      fruits: []
     },
     boissons: {
       softs: [],
       alcools: [],
-      cafe_the: [],
-    },
+      cafe_the: []
+    }
   });
 
   // Effets
@@ -175,7 +176,6 @@ export const ServerProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   const router = useRouter();
 
   const startCourses = () => {
-    router.push('/productChoice');
     return courses(handleClickSpeak);
   };
 
@@ -185,7 +185,17 @@ export const ServerProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 
   const handleCoursesAnswer = async (respond: string) => {
     if (respond.includes('entrée') || respond.includes('plat') || respond.includes('dessert') || respond.includes('boi')) {
-      await handleItemChoice(respond);
+      if (respond.includes('entrée')) {
+        router.push(`/productChoice?productType=${PRODUCT_TYPE.ENTREE}`);
+      } else if (respond.includes('plat')) {
+        router.push(`/productChoice?productType=${PRODUCT_TYPE.PLAT}`);
+      } else if (respond.includes('dessert')) {
+        router.push(`/productChoice?productType=${PRODUCT_TYPE.DESSERT}`);
+      } else {
+        router.push(`/productChoice?productType=${PRODUCT_TYPE.BOISSON}`);
+      }
+
+      await handleItemChoice(respond); // TODO : peut-être que les routeurs du dessus vont annuler ce comportement...
     } else {
       await handleQuitOrder();
     }
