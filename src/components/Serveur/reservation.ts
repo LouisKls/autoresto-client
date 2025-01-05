@@ -1,7 +1,7 @@
 export const reservation = async (
   handleClickSpeak: (text: string) => Promise<void>,
   answer: () => Promise<string | null>,
-  finishOrder: () => void
+  onReservationComplete: (hour: number, minute: number) => void
 ): Promise<void> => {
   try {
     await handleClickSpeak('Vous voulez réserver pour quelle heure ?');
@@ -12,13 +12,28 @@ export const reservation = async (
 
       if (timeMatch) {
         const extractedTime = timeMatch[0];
-        await confirmReservation(handleClickSpeak, answer, extractedTime, finishOrder);
+
+        const hour = parseInt(timeMatch[1]);
+        const minute = timeMatch[2] ? parseInt(timeMatch[2]) : 0;
+
+        if (hour >= 0 && hour <= 23 && minute >= 0 && minute <= 59) {
+
+          const extractedTimeSliced = { hour, minute };
+
+          await confirmReservation(
+            handleClickSpeak,
+            answer,
+            onReservationComplete,
+            extractedTime,
+            extractedTimeSliced
+          );
+        }
       } else {
         await handleClickSpeak('Je n\'ai pas compris.');
-        await reservation(handleClickSpeak, answer, finishOrder); // Relance la réservation
+        await reservation(handleClickSpeak, answer, onReservationComplete); // Relance la réservation
       }
     } else {
-      await reservation(handleClickSpeak, answer, finishOrder); // Relance la réservation si pas de réponse
+      await reservation(handleClickSpeak, answer, onReservationComplete); // Relance la réservation si pas de réponse
     }
   } catch (error) {
     console.error('Error in reservation:', error);
@@ -28,8 +43,9 @@ export const reservation = async (
 export const confirmReservation = async (
   handleClickSpeak: (text: string) => Promise<void>,
   answer: () => Promise<string | null>,
+  onReservationComplete: (hour: number, minute: number) => void,
   extractedTime: string,
-  finishOrder: () => void
+  extractedTimeSliced: { hour, minute }
 ): Promise<void> => {
   try {
     await handleClickSpeak(`Confirmez-vous que vous voulez réserver pour ${extractedTime}`);
@@ -38,13 +54,13 @@ export const confirmReservation = async (
     if (userResponse) {
       if (userResponse.includes('oui')) {
         await handleClickSpeak(`Parfait ! Je réserve pour ${extractedTime}. À tout à l'heure !`);
-        await finishOrder();
+        onReservationComplete(extractedTimeSliced.hour, extractedTimeSliced.minute);
       } else {
         await handleClickSpeak('D\'accord, choisissez un nouvel horaire de réservation');
-        await reservation(handleClickSpeak, answer, finishOrder); // Relance la réservation
+        await reservation(handleClickSpeak, answer, onReservationComplete); // Relance la réservation
       }
     } else {
-      await confirmReservation(handleClickSpeak, answer, extractedTime, finishOrder); // Relance la confirmation si pas de réponse
+      await confirmReservation(handleClickSpeak, answer, onReservationComplete, extractedTime, extractedTimeSliced); // Relance la confirmation si pas de réponse
     }
   } catch (error) {
     console.error('Error in reservation:', error);
