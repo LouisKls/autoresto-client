@@ -16,7 +16,8 @@ const Recap: React.FC = () => {
       <button style={orderButtonStyle} onClick={handleClick}>COMMANDER</button>
 
       <div style={infoBox}>
-        🍙 Entrée / 🍕 Plat / 🍏 Dessert
+        <span style={products}>🍙 Entrée / 🍕 Plat / 🍏 Dessert</span>
+        <span style={price}>20.00 €</span>
       </div>
 
       <h1 style={reservationHour}>12:30</h1>
@@ -61,7 +62,10 @@ const infoBox: React.CSSProperties = {
   marginBottom: '24px',
   fontSize: '18px',
   textAlign: 'center',
-  width: '90%'
+  width: '90%',
+  display: 'flex',
+  flexDirection: 'column',
+  gap: 8
 };
 
 const reservationHour: React.CSSProperties = {
@@ -85,5 +89,14 @@ const deleteButton: React.CSSProperties = {
   cursor: 'pointer',
   flex: 1
 };
+
+const products: React.CSSProperties = {
+  fontSize: 20
+}
+
+const price: React.CSSProperties = {
+  fontSize: 44,
+  fontWeight: 'bold',
+}
 
 export default Recap;

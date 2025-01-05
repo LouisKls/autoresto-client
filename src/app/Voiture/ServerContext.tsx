@@ -33,8 +33,8 @@ interface ServerContextType {
   setResponse: (value: string) => void;
   error: string;
   setError: (value: string) => void;
-  itemOrder: string[];
-  setItemOrder: (value: string[]) => void;
+  itemOrder: Product[];
+  setItemOrder: (value: Product[]) => void;
   items: Product[];
   setItems: (value: Product[]) => void;
   selectedItems: Product[];
@@ -96,7 +96,7 @@ export const ServerProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   const [isListening, setIsListening] = useState(false);
   const [response, setResponse] = useState<string>('');
   const [error, setError] = useState<string>('');
-  const [itemOrder, setItemOrder] = useState<string[]>([]);
+  const [itemOrder, setItemOrder] = useState<Product[]>([]);
   const [items, setItems] = useState<Product[]>([]);
   const [selectedItems, setSelectedItems] = useState<Product[]>([]);
   const [data, setData] = useState({
