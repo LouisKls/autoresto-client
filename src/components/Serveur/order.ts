@@ -40,7 +40,7 @@ export const quitOrder = async (
 };
 
 // orderHandling.ts
-export const continueOrder = async (
+export const continueOrder = async ( // TODO : sûrement utiliser ça dans ProductChoice au moment du clic sur un produit
   itemOrder: Product[],
   handleClickSpeak: (text: string) => Promise<void>,
   answer: () => Promise<string | null>,
@@ -101,7 +101,8 @@ export const handleContinueOrderAnswer = async (
       await handleClickSpeak('D\'accord, j\'annule ton dernier article');
       itemOrder.pop();
       await continueOrder();
-    } else if (textAnswer.includes('stop')) {
+    }
+    else if (textAnswer.includes('stop')) {
       await handleClickSpeak('D\'accord, je stoppe la commande, à la prochaine !');
     } else {
       await continueOrder();
