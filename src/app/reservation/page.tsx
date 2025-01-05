@@ -1,15 +1,11 @@
 'use client';
 
 import React from 'react';
-import { ServerProvider } from '@/app/Voiture/ServerContext';
-import { ItemsProvider } from '@/app/Voiture/ItemsContext';
-import ReservationComponent from '@/app/Voiture/ReservationHour';
+import Recap from '@/app/Voiture/Recap';
 
 const TestPage = () => {
   return (
-    <ServerProvider>
-        <ReservationComponent></ReservationComponent>
-    </ServerProvider>
+      <Recap></Recap>
   );
 };
 

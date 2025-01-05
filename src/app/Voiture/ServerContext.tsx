@@ -90,7 +90,7 @@ interface ServerContextType {
 const ServerContext = createContext<ServerContextType | undefined>(undefined);
 
 export const ServerProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  // États
+
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [voices, setVoices] = useState<SpeechSynthesisVoice[]>([]);
   const [selectedVoice, setSelectedVoice] = useState<string>('');
@@ -195,7 +195,7 @@ export const ServerProvider: React.FC<{ children: React.ReactNode }> = ({ childr
         router.push(`/productChoice?productType=${PRODUCT_TYPE.BOISSON}`);
       }
 
-      await handleItemChoice(respond); // TODO : peut-être que les routeurs du dessus vont annuler ce comportement...
+      await handleItemChoice(respond);
     } else {
       await handleQuitOrder();
     }
@@ -210,7 +210,10 @@ export const ServerProvider: React.FC<{ children: React.ReactNode }> = ({ childr
       handleClickSpeak,
       startContinueOrder,
       answer,
-      setSelectedItems
+      (newItems) => {
+        console.log("Setting new items in ServerProvider:", newItems);
+        //setSelectedItems(newItems);
+      }
     );
   };
 

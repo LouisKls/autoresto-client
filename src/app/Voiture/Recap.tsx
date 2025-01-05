@@ -1,6 +1,7 @@
 import React from 'react';
 import ExitCarModeComponent from '@/app/Voiture/ExitCarModeComponent';
 import { useServer } from '@/app/Voiture/ServerContext';
+import { useReservation } from '@/app/Voiture/ReservationHourContext';
 
 const Recap: React.FC = () => {
   const { handleOrder } = useServer();
@@ -9,8 +10,9 @@ const Recap: React.FC = () => {
     handleOrder();
   };
 
-  return (
+  const { hour, minute } = useReservation();
 
+  return (
     <div style={containerStyle}>
       <ExitCarModeComponent containerWidth="90%" />
       <button style={orderButtonStyle} onClick={handleClick}>COMMANDER</button>
@@ -20,7 +22,7 @@ const Recap: React.FC = () => {
         <span style={price}>20.00 €</span>
       </div>
 
-      <h1 style={reservationHour}>12:30</h1>
+      <h1 style={reservationHour}>{hour}:{minute}</h1>
 
       <div style={actions}>
         <button style={deleteButton}>SUPPRIMER</button>
@@ -29,7 +31,6 @@ const Recap: React.FC = () => {
   );
 };
 
-// Styles en tant qu'objets séparés, typés avec React.CSSProperties
 const containerStyle: React.CSSProperties = {
   display: 'flex',
   flexDirection: 'column',

@@ -1,7 +1,6 @@
 'use client';
 
 import React from 'react';
-import { ServerProvider } from '@/app/Voiture/ServerContext';
 import ProductChoice, { PRODUCT_TYPE } from '@/app/Voiture/ProductChoice';
 import { useSearchParams } from 'next/navigation';
 
@@ -13,9 +12,7 @@ const TestPage = () => {
     : PRODUCT_TYPE.ENTREE;
 
   return (
-    <ServerProvider>
-        <ProductChoice productType={productType}></ProductChoice>
-    </ServerProvider>
+      <ProductChoice productType={productType}></ProductChoice>
   );
 };
 

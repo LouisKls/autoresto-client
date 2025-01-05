@@ -1,5 +1,8 @@
 import Fuse from 'fuse.js';
 import { Product } from '@/data/types';
+import { PRODUCT_TYPE } from '@/app/Voiture/ProductChoice';
+import { useNavigate } from 'react-router';
+
 
 export const chooseAnItem = async (
   response: string,
@@ -9,7 +12,7 @@ export const chooseAnItem = async (
   handleClickSpeak: (text: string) => Promise<void>,
   continueOrder: () => Promise<void>,
   answer: () => Promise<string | undefined>,
-  setSelectedItems: (items: Product[]) => void
+  onItemsSelected: (items: Product[]) => void
 ): Promise<void> => {
   // Définition des catégories disponibles
   const categories = {
@@ -44,10 +47,12 @@ export const chooseAnItem = async (
     const randomItems = getRandomItems(chosenCategory, 4);
 
     // Mise à jour du context avec les nouveaux items
-    setSelectedItems(randomItems);
+    console.log("random items : ", randomItems);
+
+    onItemsSelected(randomItems);
 
     // Lecture vocale des choix
-    await itemChoice(randomItems, handleClickSpeak, setSelectedItems);
+    await itemChoice(randomItems, handleClickSpeak);
 
     // Attente de la réponse de l'utilisateur
     const userResponse = await answer();
@@ -96,7 +101,7 @@ export const chooseAnItem = async (
           handleClickSpeak,
           continueOrder,
           answer,
-          setSelectedItems
+          onItemsSelected
         );
       }
     }
@@ -112,11 +117,9 @@ export const getRandomItems = (category: Product[], count: number): Product[] =>
 // Fonction pour la lecture vocale des choix
 const itemChoice = async (
   items: Product[],
-  handleClickSpeak: (text: string) => Promise<void>,
-  setSelectedItems: (items: Product[]) => void
+  handleClickSpeak: (text: string) => Promise<void>
 ): Promise<void> => {
   try {
-    setSelectedItems(items);
     await handleClickSpeak('Parfait ! J\'ai 4 choix à te proposer :');
     for (const item of items) {
       await handleClickSpeak(item.name);

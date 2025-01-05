@@ -1,14 +1,26 @@
 import React, { useRef, useState } from 'react';
+import { useReservation } from '@/app/Voiture/ReservationHourContext';
+import { useRouter } from 'next/navigation';
+import { useNavigate } from 'react-router';
 
 const ReservationComponent = () => {
-  const [hour, setHour] = useState(12);
-  const [minute, setMinute] = useState(30);
+  const { hour, minute, setHour, setMinute } = useReservation();
   const [isDragging, setIsDragging] = useState({ hours: false, minutes: false });
   const hourContainerRef = useRef<HTMLDivElement>(null);
   const minuteContainerRef = useRef<HTMLDivElement>(null);
 
   const hours = Array.from({ length: 4 }, (_, i) => i + 11);
   const minutes = [0, 15, 30, 45];
+
+  //const router = useRouter();
+
+  const navigate = useNavigate(); // Hook pour la navigation
+
+  const handleValidation = () => {
+    navigate('/page2');
+    //router.push('/recap');
+  };
+
 
   const getAdjacentValues = (value: number, array: number[]) => {
     const currentIndex = array.indexOf(value);
@@ -33,21 +45,20 @@ const ReservationComponent = () => {
     const y = touch.clientY - rect.top;
     const totalHeight = rect.height;
 
-    const currentValue = type === 'hours' ? hour : minute;
     const values = type === 'hours' ? hours : minutes;
-    const currentIndex = values.indexOf(currentValue);
+    const stepHeight = totalHeight / values.length;
+    const newIndex = Math.floor(y / stepHeight);
 
-    const middlePoint = totalHeight / 2;
-    if (y < middlePoint && currentIndex > 0) {
-      const newValue = values[currentIndex - 1];
-      if (type === 'hours') setHour(newValue);
-      else setMinute(newValue);
-    } else if (y > middlePoint && currentIndex < values.length - 1) {
-      const newValue = values[currentIndex + 1];
-      if (type === 'hours') setHour(newValue);
-      else setMinute(newValue);
+    if (newIndex >= 0 && newIndex < values.length) {
+      const newValue = values[newIndex];
+      if (type === 'hours') {
+        setHour(newValue);
+      } else {
+        setMinute(newValue);
+      }
     }
   };
+
 
   const handleTouchEnd = (type: 'hours' | 'minutes') => {
     setIsDragging(prev => ({ ...prev, [type]: false }));
@@ -119,7 +130,7 @@ const ReservationComponent = () => {
       </div>
 
       <div style={styles.actions}>
-        <button style={styles.actionButton}>VALIDER</button>
+        <button style={styles.actionButton} onClick={handleValidation}>VALIDER</button>
         <button style={styles.backButton}>RETOUR</button>
       </div>
     </div>
@@ -131,7 +142,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     width: '100%',
     margin: '0 auto',
     padding: '16px',
-    boxSizing: 'border-box',
+    boxSizing: 'border-box'
   },
   exitButton: {
     width: '100%',
@@ -141,13 +152,13 @@ const styles: { [key: string]: React.CSSProperties } = {
     borderRadius: '4px',
     border: 'none',
     cursor: 'pointer',
-    marginBottom: '16px',
+    marginBottom: '16px'
   },
   title: {
     fontSize: '24px',
     fontWeight: 'bold',
     margin: '16px 0',
-    textAlign: 'center',
+    textAlign: 'center'
   },
   infoBox: {
     backgroundColor: '#3B82F6',
@@ -156,7 +167,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     borderRadius: '4px',
     marginBottom: '24px',
     fontSize: '18px',
-    textAlign: 'center',
+    textAlign: 'center'
   },
   timePickerContainer: {
     display: 'flex',
@@ -166,7 +177,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     marginBottom: '24px',
     position: 'relative',
     flexDirection: 'row',
-    flexWrap: 'wrap',
+    flexWrap: 'wrap'
   },
   pickerColumn: {
     position: 'relative',
@@ -178,7 +189,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
     display: 'flex',
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   pickerScroller: {
     position: 'absolute',
@@ -189,34 +200,34 @@ const styles: { [key: string]: React.CSSProperties } = {
     touchAction: 'none',
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
   pickerValues: {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    gap: '16px',
+    gap: '16px'
   },
   currentValue: {
     fontSize: '48px',
     fontWeight: 'bold',
-    color: '#000000',
+    color: '#000000'
   },
   adjacentValue: {
     fontSize: '36px',
     fontWeight: 'normal',
-    color: '#00000040',
+    color: '#00000040'
   },
   separator: {
     fontSize: '32px',
     fontWeight: 'bold',
-    display: 'inline-block',
+    display: 'inline-block'
   },
   actions: {
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-between',
-    gap: '20px',
+    gap: '20px'
   },
   actionButton: {
     backgroundColor: '#007bff',
@@ -226,7 +237,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     fontSize: '28px',
     borderRadius: '5px',
     cursor: 'pointer',
-    flex: 1,
+    flex: 1
   },
   backButton: {
     backgroundColor: '#d9534f',
@@ -236,10 +247,9 @@ const styles: { [key: string]: React.CSSProperties } = {
     fontSize: '28px',
     borderRadius: '5px',
     cursor: 'pointer',
-    flex: 1,
-  },
+    flex: 1
+  }
 };
-
 
 
 export default ReservationComponent;
