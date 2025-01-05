@@ -8,9 +8,7 @@ import Recap from '@/app/Voiture/Recap';
 const TestPage = () => {
   return (
     <ServerProvider>
-      <ItemsProvider>
         <Recap></Recap>
-      </ItemsProvider>
     </ServerProvider>
   );
 };

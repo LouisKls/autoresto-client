@@ -3,7 +3,6 @@
 import React from 'react';
 import { ServerProvider } from '@/app/Voiture/ServerContext';
 import ProductChoice, { PRODUCT_TYPE } from '@/app/Voiture/ProductChoice';
-import { ItemsProvider } from '@/app/Voiture/ItemsContext';
 import { useSearchParams } from 'next/navigation';
 
 const TestPage = () => {
@@ -15,9 +14,7 @@ const TestPage = () => {
 
   return (
     <ServerProvider>
-      <ItemsProvider>
         <ProductChoice productType={productType}></ProductChoice>
-      </ItemsProvider>
     </ServerProvider>
   );
 };

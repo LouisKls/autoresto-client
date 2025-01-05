@@ -8,9 +8,7 @@ import ReservationComponent from '@/app/Voiture/ReservationHour';
 const TestPage = () => {
   return (
     <ServerProvider>
-      <ItemsProvider>
         <ReservationComponent></ReservationComponent>
-      </ItemsProvider>
     </ServerProvider>
   );
 };
