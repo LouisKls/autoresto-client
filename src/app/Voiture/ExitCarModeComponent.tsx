@@ -1,10 +1,16 @@
 import React from 'react';
+import { useRouter } from 'next/navigation';
 
 interface ExitCarModeProps {
-  containerWidth: string; // La largeur à passer comme prop
+  containerWidth: string;
 }
 
 const ExitCarModeComponent: React.FC<ExitCarModeProps> = ({ containerWidth }) => {
+  const router = useRouter();
+
+  const handleExitCarMode = () => {
+    router.push('/');
+  };
 
   const containerStyle: React.CSSProperties = {
     width: containerWidth
@@ -12,7 +18,9 @@ const ExitCarModeComponent: React.FC<ExitCarModeProps> = ({ containerWidth }) =>
 
   return (
     <div style={containerStyle}>
-      <button style={exitCarModeButtonStyle}>QUITTER LE MODE VOITURE</button>
+      <button style={exitCarModeButtonStyle} onClick={handleExitCarMode}>
+        QUITTER LE MODE VOITURE
+      </button>
     </div>
   );
 };
