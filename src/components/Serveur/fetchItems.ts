@@ -8,7 +8,6 @@ export const fetchItems = async (
 ) => {
   try {
     const data = PRODUCTS;
-    console.log(data);
     setData(data);
 
     // Automatiser la fusion des items
