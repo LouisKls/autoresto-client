@@ -212,7 +212,7 @@ export const ServerProvider: React.FC<{ children: React.ReactNode }> = ({ childr
       answer,
       (newItems) => {
         console.log("Setting new items in ServerProvider:", newItems);
-        //setSelectedItems(newItems);
+        setSelectedItems(newItems);
       }
     );
   };
