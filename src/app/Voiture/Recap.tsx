@@ -4,13 +4,21 @@ import { useServer } from '@/app/Voiture/ServerContext';
 import { useReservation } from '@/app/Voiture/ReservationHourContext';
 
 const Recap: React.FC = () => {
-  const { handleOrder } = useServer();
+  const { handleOrder, itemOrder } = useServer();
 
   const handleClick = () => {
     handleOrder();
   };
 
   const { hour, minute } = useReservation();
+
+  const getPriceToPay = (): number => {
+    let price: number = 0;
+    for(const item of itemOrder){
+      price += item.price;
+    }
+    return price;
+  }
 
   return (
     <div style={containerStyle}>
@@ -19,7 +27,7 @@ const Recap: React.FC = () => {
 
       <div style={infoBox}>
         <span style={products}>🍙 Entrée / 🍕 Plat / 🍏 Dessert</span>
-        <span style={price}>20.00 €</span>
+        <span style={price}>{getPriceToPay} €</span>
       </div>
 
       <h1 style={reservationHour}>{hour}:{minute}</h1>

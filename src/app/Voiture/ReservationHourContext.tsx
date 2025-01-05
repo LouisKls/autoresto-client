@@ -1,3 +1,5 @@
+'use client';
+
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 
 interface ReservationContextType {
@@ -7,7 +9,7 @@ interface ReservationContextType {
   setMinute: (minute: number) => void;
 }
 
-export const ReservationContext = createContext<ReservationContextType | undefined>(undefined);
+const ReservationContext = createContext<ReservationContextType | undefined>(undefined);
 
 export const ReservationProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [hour, setHour] = useState(12);

@@ -1,11 +1,11 @@
 'use client';
 
 import React from 'react';
-import Recap from '@/app/Voiture/Recap';
+import ReservationComponent from '@/app/Voiture/ReservationHour';
 
 const TestPage = () => {
   return (
-      <Recap></Recap>
+      <ReservationComponent></ReservationComponent>
   );
 };
 

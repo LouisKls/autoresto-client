@@ -1,7 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { useReservation } from '@/app/Voiture/ReservationHourContext';
 import { useRouter } from 'next/navigation';
-import { useNavigate } from 'react-router';
 
 const ReservationComponent = () => {
   const { hour, minute, setHour, setMinute } = useReservation();
@@ -12,13 +11,10 @@ const ReservationComponent = () => {
   const hours = Array.from({ length: 4 }, (_, i) => i + 11);
   const minutes = [0, 15, 30, 45];
 
-  //const router = useRouter();
-
-  const navigate = useNavigate(); // Hook pour la navigation
+  const router = useRouter();
 
   const handleValidation = () => {
-    navigate('/page2');
-    //router.push('/recap');
+    router.push('/recap');
   };
 
 

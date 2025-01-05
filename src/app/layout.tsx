@@ -21,7 +21,9 @@ export default function RootLayout({
     <html lang="en" className={inter.className}>
       <body>
       <ServerProvider>
+        <ReservationProvider>
           {children}
+        </ReservationProvider>
       </ServerProvider>
       </body>
     </html>
