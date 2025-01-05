@@ -1,12 +1,11 @@
 import Fuse from 'fuse.js';
-import { Item } from './types';
 import { Product } from '@/data/types';
 
 export const chooseAnItem = async (
   response: string,
   data: Record<string, Record<string, Product[]>>,
   items: Product[],
-  itemOrder: string[],
+  itemOrder: Product[],
   handleClickSpeak: (text: string) => Promise<void>,
   continueOrder: () => Promise<void>,
   answer: () => Promise<string | undefined>,
@@ -85,7 +84,6 @@ export const chooseAnItem = async (
         await continueOrder();
       } else {
         console.log('No match found');
-        // Vous pouvez ajouter ici une gestion des cas où aucune correspondance n'est trouvée
       }
 
       // Gestion de la demande "autres choix"

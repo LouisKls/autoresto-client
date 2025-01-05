@@ -2,6 +2,7 @@ import React from 'react';
 import ExitCarModeComponent from '@/app/Voiture/ExitCarModeComponent';
 import { useItems } from './ItemsContext';
 import { Product } from '@/data/types';
+import { useServer } from '@/app/Voiture/ServerContext';
 
 export enum PRODUCT_TYPE {
   ENTREE,
@@ -54,6 +55,11 @@ const defaultSelectedItems: Product[] = [
 
 const ProductChoice: React.FC<Props> = ({ productType }) => {
   //const { selectedItems } = useItems();
+  const { itemOrder, setItemOrder } = useServer(); // TODO : change itemOrder de string à Product
+
+  const handleAddToOrder = (item: Product) => {
+    setItemOrder([...itemOrder, item]); // Ajoute le nouvel élément au tableau
+  };
 
   return (
     <div style={styles.container}>
@@ -67,6 +73,7 @@ const ProductChoice: React.FC<Props> = ({ productType }) => {
               src={item.image || 'https://via.placeholder.com/50'}
               alt={item.name}
               style={styles.image}
+              onClick={() => handleAddToOrder(item)}
             />
             <span>{item.name}</span>
           </button>

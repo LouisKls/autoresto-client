@@ -1,3 +1,5 @@
+import { Product } from '@/data/types';
+
 export const startOrder = async (
   handleClickSpeak: (text: string) => void
 ) => {
@@ -39,7 +41,7 @@ export const quitOrder = async (
 
 // orderHandling.ts
 export const continueOrder = async (
-  itemOrder: string[],
+  itemOrder: Product[],
   handleClickSpeak: (text: string) => Promise<void>,
   answer: () => Promise<string | null>,
   handleContinueOrderAnswer: (response: string) => Promise<void>
@@ -49,7 +51,7 @@ export const continueOrder = async (
     if (itemOrder.length > 0) {
       await handleClickSpeak('Actuellement dans ta commande il y a ces articles :');
       for (const item of itemOrder) {
-        await handleClickSpeak(item);
+        await handleClickSpeak(item.name);
       }
     }
 
@@ -81,7 +83,7 @@ export const handleContinueOrderAnswer = async (
   handleClickSpeak: (text: string) => Promise<void>,
   reservation: () => Promise<void>,
   continueOrder: () => Promise<void>,
-  itemOrder: string[]
+  itemOrder: Product[]
 ) => {
   try {
     if (textAnswer.includes('commander')) {
