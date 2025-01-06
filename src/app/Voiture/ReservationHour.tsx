@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { useReservation } from '@/app/Voiture/ReservationHourContext';
 import { useRouter } from 'next/navigation';
+import stylesAccueil from './Accueil.module.scss';
 
 const ReservationComponent = () => {
   const { hour, minute, setHour, setMinute } = useReservation();
@@ -71,10 +72,6 @@ const ReservationComponent = () => {
 
       <h1 style={styles.title}>Heure de réservation</h1>
 
-      <div style={styles.infoBox}>
-        🍙 Entrée / 🍕 Plat / 🍏 Dessert
-      </div>
-
       <div style={styles.timePickerContainer}>
         <div style={styles.pickerColumn}>
           <div
@@ -127,8 +124,15 @@ const ReservationComponent = () => {
 
       <div style={styles.actions}>
         <button style={styles.actionButton} onClick={handleValidation}>VALIDER</button>
-        <button style={styles.backButton}>RETOUR</button>
       </div>
+
+      <div style={instructionsContainer}>
+        <div style={instructionBox} className={stylesAccueil.instructionBox}>
+          <span style={instructionIcon}>❌</span>
+          <span style={instructionText}>Dites "Quitter" pour annuler</span>
+        </div>
+      </div>
+
     </div>
   );
 };
@@ -234,17 +238,33 @@ const styles: { [key: string]: React.CSSProperties } = {
     borderRadius: '5px',
     cursor: 'pointer',
     flex: 1
-  },
-  backButton: {
-    backgroundColor: '#d9534f',
-    color: '#fff',
-    border: 'none',
-    padding: '10px 20px',
-    fontSize: '28px',
-    borderRadius: '5px',
-    cursor: 'pointer',
-    flex: 1
   }
+};
+
+const instructionsContainer: React.CSSProperties = {
+  width: '90%',
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '15px'
+};
+
+const instructionBox: React.CSSProperties = {
+  backgroundColor: 'white',
+  padding: '15px',
+  borderRadius: '10px',
+  display: 'flex',
+  alignItems: 'center',
+  gap: '15px',
+  boxShadow: '0 2px 4px rgba(0, 0, 0, 0.05)'
+};
+
+const instructionIcon: React.CSSProperties = {
+  fontSize: '24px'
+};
+
+const instructionText: React.CSSProperties = {
+  fontSize: '16px',
+  color: '#333'
 };
 
 
