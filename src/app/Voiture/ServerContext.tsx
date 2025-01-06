@@ -160,6 +160,7 @@ export const ServerProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   };
 
   const handleQuitOrder = () => {
+    router.push('/accueil');
     return quitOrder(handleClickSpeak);
   };
 

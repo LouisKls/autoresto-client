@@ -3,6 +3,7 @@ import ExitCarModeComponent from '@/app/Voiture/ExitCarModeComponent';
 import { useServer } from '@/app/Voiture/ServerContext';
 import { useReservation } from '@/app/Voiture/ReservationHourContext';
 import styles from '@/app/Voiture/Accueil.module.scss';
+import { router } from 'next/client';
 
 const Recap: React.FC = () => {
   const { handleOrder, itemOrder, setItemOrder, isSpeaking, isListening } = useServer();
@@ -60,7 +61,7 @@ const Recap: React.FC = () => {
 
       {showReservationHour && (
         <div style={infoBox}>
-          <span style={products}>🍙 Entrée / 🍕 Plat / 🍏 Dessert</span>
+          <span style={products}>A PAYER SUR PLACE</span>
           <span style={price}>{getPriceToPay()} €</span>
         </div>)}
 
@@ -68,9 +69,10 @@ const Recap: React.FC = () => {
         <h1 style={reservationHour}>{hour}:{minute}</h1>
       )}
 
-      <div style={actions}>
-        <button style={deleteButton} onClick={handleDeletion}>SUPPRIMER</button>
-      </div>
+      {showReservationHour && (
+        <div style={actions}>
+          <button style={deleteButton} onClick={handleDeletion}>ANNULER</button>
+        </div>)}
     </div>
   )
     ;
