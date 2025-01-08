@@ -1,8 +1,11 @@
 .carouselContainer {
   display: flex;
   align-items: center;
+  justify-content: center;
+  gap: 10px;
   background-color: #fff;
-  padding: 2rem 4rem;
+  height: 20%;
+  overflow: hidden;
 }
 
 .arrowButton {
@@ -14,10 +17,11 @@
 }
 
 .subcat {
+  width: 80px;
+  max-width: 80px;
   flex: 1;
   background: none;
   border: none;
-  margin: 0 0.5rem;
   text-align: center;
   cursor: pointer;
   color: #666;

@@ -1,0 +1,26 @@
+@import '@styles/colors.module';
+
+.tableTerritoryContainer {
+  width: 45%;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  background-color: $white;
+  border-radius: 25px;
+  box-shadow: 10px -5px 10px 5px rgba(0, 0, 0, 0.08);
+
+  .selectionContainer {
+    width: 75%;
+    height: 100%;
+    padding-right: 10px;
+
+    .productsGrid {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 25px;
+      overflow-y: auto;
+      height: 70%;
+    }
+  }
+}

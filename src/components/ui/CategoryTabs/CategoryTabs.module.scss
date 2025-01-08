@@ -2,11 +2,11 @@
   box-sizing: border-box;
   display: flex;
   background-color: #fff;
-  padding: 0.5rem 4rem;
+  height: 10%;
 
   .tab {
     flex: 1;
-    font-size: 24px;
+    font-size: 14px;
     background: transparent;
     border: none;
     padding: 0.5rem 1rem;
@@ -17,13 +17,6 @@
     &.active {
       color: #f9a826;
       border-bottom: 2px solid #f9a826;
-    }
-  }
-  
-  &.mobileCategoryTabs {
-    padding: 0px;
-    .tab {
-      font-size: 14px;
     }
   }
 }

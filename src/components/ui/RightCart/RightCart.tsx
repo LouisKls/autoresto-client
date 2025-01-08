@@ -7,17 +7,13 @@ import { Button } from '@components/ui/Button/Button';
 import { CartItem } from '@/data/types';
 
 interface RightCartProps {
-  onClose: () => void;
   cart?: CartItem[];
   onRemoveItem?: (productId: number) => void;
-  mobile?: boolean;
 }
 
 const RightCart: React.FC<RightCartProps> = ({
-                                               onClose,
                                                cart = [],
                                                onRemoveItem,
-                                               mobile
                                              }) => {
   const subtotal = cart.reduce(
     (sum, item) => sum + item.product.price * item.quantity,
@@ -27,18 +23,9 @@ const RightCart: React.FC<RightCartProps> = ({
   const total = subtotal - reduction;
 
   return (
-    <div className={[
-      styles.rightCartContent,
-      mobile ? styles.mobileCart : '',
-    ].join(' ')}>
+    <div className={styles.rightCartContent}>
       <div className={styles.rightCartHeader}>
         <div className={styles.rightCartTitle}>Mon Panier</div>
-        <IconButton
-          square
-          onClick={onClose}
-        >
-          <X color={"white"} />
-        </IconButton>
       </div>
 
       <div className={styles.cartItems}>
@@ -58,14 +45,6 @@ const RightCart: React.FC<RightCartProps> = ({
                 {(item.product.price * item.quantity).toFixed(2)} €
               </div>
             </div>
-            <IconButton
-              square
-              color={'danger'}
-              small
-              onClick={() => onRemoveItem && onRemoveItem(item.product.id)}
-            >
-              <Trash2 color={"white"}/>
-            </IconButton>
           </div>
         ))}
       </div>
@@ -86,13 +65,12 @@ const RightCart: React.FC<RightCartProps> = ({
       </div>
 
       <Button
-        fullWidth
         variant={'contained'}
         onClick={() => {}}
         color={'success'}
         thin
       >
-        Valider ma commande
+        Valider mon panier
       </Button>
     </div>
   );

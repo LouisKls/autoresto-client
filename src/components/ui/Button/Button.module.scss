@@ -5,10 +5,10 @@
   width: fit-content;
   border: none;
   outline: none;
-  border-radius: 13px;
-  padding: 14px 48px;
+  border-radius: 6px;
+  padding: 7px 24px;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 12px;
   box-shadow: 0 4px 15px 0 rgba(0, 0, 0, 0.13);
   position: relative;
   display: flex;
@@ -143,8 +143,8 @@
   }
 
   &.thin {
-    padding: 10px 30px;
-    font-size: 14px;
+    padding: 5px 10px;
+    font-size: 10px;
   }
 
   > span {

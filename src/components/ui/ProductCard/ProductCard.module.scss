@@ -2,9 +2,9 @@
 
 .card {
     box-sizing: border-box;
-    height: 200px;
-    min-width: 240px;
-    width: 240px;
+    height: 100px;
+    min-width: 120px;
+    width: 120px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -13,18 +13,14 @@
     position: relative;
     color: black;
     box-shadow: 0px 4px 15px 0px rgba(0, 0, 0, 0.08);
-    padding: 12px;
-    padding-top: 60px;
+    padding: 6px;
+    margin-top: 40px;
+    padding-top: 15px;
+    margin-bottom: 5px;
 
     &:hover {
         cursor: pointer;
-        border: solid 2px $primary;
-    }
-
-    .cardTitle {
-    }
-
-    .cardDescription {
+        border: solid 1px $primary;
     }
 
     .cardImage {
@@ -48,15 +44,16 @@
         justify-content: left;
         align-items: center;
         height: 100%;
+        gap: 2px;
 
         h1 {
-            font-size: 16px;
+            font-size: 11px;
             font-weight: bold;
-            margin-bottom: 5px;
+            margin-bottom: 2px;
         }
 
         p {
-            font-size: 13px;
+            font-size: 9px;
             color: #848383;
         }
     }
@@ -69,7 +66,7 @@
 
         .cardPrice {
             font-weight: bold;
-            font-size: 20px;
+            font-size: 13px;
         }
     }
 }

@@ -1,11 +1,23 @@
-.productsGrid {
+@import '@styles/colors.module';
+
+.pageContainer {
+  width: 100%;
+  height: 100%;
   display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 70px;
-  padding: 4rem 4rem;
-  overflow-y: auto;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: $primary;
+
+  .topContainer, .bottomContainer {
+    width: 100%;
+    height: 42%;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .topContainer {
+    transform: scale(-1, -1);
+  }
 }
 
 .subcategoryListBoxContainer {

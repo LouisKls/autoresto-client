@@ -20,7 +20,7 @@ export const ProductCard = ({
   return (
     <div {...props} className={styles.card}>
       <div className={styles.cardImage}>
-        <Image src={product.image} alt={product.name} width={140} height={100} className={styles.img}/>
+        <Image src={product.image} alt={product.name} width={56} height={40} className={styles.img}/>
       </div>
       <div className={styles.cardBody}>
         <h1 className={styles.cardTitle}>{product.name}</h1>

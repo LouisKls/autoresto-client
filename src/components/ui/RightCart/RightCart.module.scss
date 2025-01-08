@@ -1,35 +1,38 @@
 .rightCartContent {
-  padding: 2rem;
+  padding: 10px;
   height: 100%;
+  width: 25%;
   display: flex;
   flex-direction: column;
+  align-items: center;
   overflow-y: auto;
+  border-radius: 25px;
+  box-shadow: -10px 5px 10px -5px rgba(0, 0, 0, 0.08);
+  gap: 10px;
 
   .rightCartHeader {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
-    margin-bottom: 1.5rem;
 
     .rightCartTitle {
-      font-size: 20px;
+      font-size: 12px;
     }
   }
 
   .cartItems {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
-    margin: 1rem 0;
+    width: 100%;
+    gap: 5px;
     flex: 1;
     overflow-y: auto;
 
     .cartItem {
       display: flex;
       align-items: center;
-      padding: 0.8rem;
       background-color: var(--white);
-      gap: 0.5rem;
+      gap: 5px;
       border-bottom: 1px solid #eee;
 
       .itemDetails {
@@ -37,34 +40,41 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
+        font-size: 10px;
+        padding: 5px 0px;
+        overflow-x: hidden;
       }
 
       .itemInfo {
         display: flex;
         align-items: center;
-        gap: 0.5rem;
+        gap: 2px;
+        width: 70%;
       }
 
       .itemQuantity {
         color: var(--black, #000);
-        font-size: 0.9rem;
       }
 
       .itemX {
         color: var(--orange, #f8b03d);
-        font-size: 0.9rem;
         margin: 0 0.2rem;
       }
 
       .itemName {
         color: var(--black, #000);
-        font-size: 0.9rem;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        width: 80%;
       }
 
       .itemPrice {
         color: var(--orange, #f8b03d);
         font-weight: 500;
-        font-size: 0.9rem;
+        width: 30%;
+        text-align: right;
+        padding-right: 2px;
       }
 
       .deleteButton {
@@ -77,7 +87,7 @@
         align-items: center;
         justify-content: center;
         transition: color 0.2s;
-        font-size: 0.9rem;
+        font-size: 12px;
 
         &:hover {
           color: var(--orange, #f8b03d);
@@ -88,15 +98,15 @@
 
   .cartSummary {
     background-color: var(--white, #fff);
-    padding: 1rem;
-    margin: 1.5rem 0;
     border: 1px solid #eee;
-    border-radius: 4px;
+    border-radius: 10px;
+    width: 100%;
+    font-size: 10px;
+    padding: 5px;
 
     .summaryRow {
       display: flex;
       justify-content: space-between;
-      padding: 0.5rem 0;
       color: var(--black, #000);
 
       &.reduction span:last-child {
@@ -105,14 +115,10 @@
 
       &.total {
         border-top: 1px solid #eee;
-        margin-top: 0.5rem;
-        padding-top: 1rem;
+        padding-top: 10px;
         font-weight: bold;
+        font-size: 13px;
       }
     }
-  }
-
-  &.mobileCart {
-    padding: 1rem;
   }
 }
