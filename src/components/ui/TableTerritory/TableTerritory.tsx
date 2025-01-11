@@ -9,11 +9,11 @@ import { CartItem, Product } from '@/data/types';
 import styles from './TableTerritory.module.scss';
 import RightCart from '../RightCart/RightCart';
 
-export const TableTerritory = () => {
+export const TableTerritory = ({ tableId }: { tableId: string }) => {
   const [selectedCategory, setSelectedCategory] = useState<string>('plats');
   const [selectedSubcategory, setSelectedSubcategory] = useState<string>('viandes');
   const [cart, setCart] = useState<CartItem[]>([]);
-
+  
   const handleSelectCategory = (catId: string) => {
     setSelectedCategory(catId);
     const defaultSubcat = SUBCATEGORIES[catId]?.[0]?.id;
@@ -51,14 +51,15 @@ export const TableTerritory = () => {
   };
 
   return (
-    <div className={styles.tableTerritoryContainer}>
+    <div 
+      className={styles.tableTerritoryContainer}
+    >
       <div className={styles.selectionContainer}>
         <CategoryTabs
           categories={CATEGORIES}
           selectedCategory={selectedCategory}
           onSelectCategory={handleSelectCategory}
         />
-
         {SUBCATEGORIES[selectedCategory] && (
           <SubcategoryCarousel
             subcategories={SUBCATEGORIES[selectedCategory]}
@@ -67,14 +68,18 @@ export const TableTerritory = () => {
             visibleCount={4}
           />
         )}
-
         <div className={styles.productsGrid}>
           {filteredProducts.map((product) => (
-            <ProductCard key={product.id} product={product} onAdd={handleAddToCart} />
+            <ProductCard
+              key={product.id}
+              product={product}
+              onAdd={handleAddToCart}
+              tableId={tableId} // Passer l'ID de la table ici
+            />
           ))}
         </div>
       </div>
-      <RightCart cart={cart} onRemoveItem={handleRemoveFromCart}/>
+      <RightCart cart={cart} onRemoveItem={handleRemoveFromCart} />
     </div>
   );
-}
+};
