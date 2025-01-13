@@ -3,7 +3,9 @@
 import React from 'react';
 import styles from './index.module.scss';
 import { TableTerritory } from '@/components/ui/TableTerritory/TableTerritory';
+import { ShoppingCart } from 'lucide-react';
 import { Bin } from '@/components/ui/Bin/Bin'; 
+import { Label } from '@/components/ui/Label/Label';
 
 export default function HomePage() {
 
@@ -20,6 +22,9 @@ export default function HomePage() {
       return;
     }else if (type === "tables") {
       console.log("Dépôt sur une table, il ne se passe rien");
+      return;
+    }else if (type === "bin") {
+      console.log("Dépôt sur une poubelle, suppression du produit de la liste");
       return;
     }
   
@@ -39,28 +44,90 @@ export default function HomePage() {
       onDrop={(event) => handleDrop(event, "global")}
       className={styles.pageContainer}
     >
-      <div 
-        onDragOver={enableDropping}  
-        onDrop={(event) => {
-          event.stopPropagation();
-          handleDrop(event, "tables");
-        }}
-        className={styles.topContainer}
-      >
-        <TableTerritory tableId="tableA" />
-        <Bin/>
-        <TableTerritory tableId="tableB" />
+      <div      
+        className={styles.topContainer}>
+
+        <div 
+          onDragOver={enableDropping}  
+          onDrop={(event) => {
+            event.stopPropagation();
+            handleDrop(event, "tables");
+          }} 
+          className={styles.tables}
+        >
+          <TableTerritory tableId="tableA" />
+        </div>
+
+        <div 
+          onDragOver={enableDropping}  
+          onDrop={(event) => {
+            event.stopPropagation();
+            handleDrop(event, "bin");
+          }}  
+        >
+          <Bin/>
+        </div>
+
+        <div 
+          onDragOver={enableDropping}  
+          onDrop={(event) => {
+            event.stopPropagation();
+            handleDrop(event, "tables");
+          }}  
+          className={styles.tables}
+        >
+          <TableTerritory tableId="tableB" />
+        </div>
+
       </div>
-      <div 
-        onDragOver={enableDropping}  
-        onDrop={(event) => {
-          event.stopPropagation();
-          handleDrop(event, "tables");
-        }}        
+
+      <div
+        className={styles.cart}
+      >
+        <h2 className={styles.tableNameA}>A</h2>
+        <h2 className={styles.tableNameC}>C</h2>
+
+        <ShoppingCart size={70}/>
+
+        <h2 className={styles.tableNameB}>B</h2>
+        <h2 className={styles.tableNameD}>D</h2>
+      </div>
+
+      <div      
         className={styles.bottomContainer}>
-        <TableTerritory tableId="tableC" />
-        <Bin/>
-        <TableTerritory tableId="tableD" />
+
+        <div 
+          onDragOver={enableDropping}  
+          onDrop={(event) => {
+            event.stopPropagation();
+            handleDrop(event, "tables");
+          }} 
+          className={styles.tables}
+        >
+          <TableTerritory tableId="tableC" />
+        </div>
+
+        <div 
+          onDragOver={enableDropping}  
+          onDrop={(event) => {
+            event.stopPropagation();
+            handleDrop(event, "bin");
+          }}  
+        >
+          <Bin/>
+        </div>
+
+        <div 
+          onDragOver={enableDropping}  
+          onDrop={(event) => {
+            event.stopPropagation();
+            handleDrop(event, "tables");
+          }}  
+          className={styles.tables}
+        >
+          <TableTerritory tableId="tableD" />
+        </div>
+
       </div>
     </div>
   );

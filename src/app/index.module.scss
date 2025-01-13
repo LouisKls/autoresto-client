@@ -20,6 +20,38 @@
   }
 }
 
+.tables{
+  width: 45%;
+}
+
+.cart {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 16%;
+  color: white;
+}
+
+.tableNameA {
+  color: white;
+  transform: translateX(-1600%) translateY(-100%) scale(-1, -1);
+}
+
+.tableNameB {
+  color: white;
+  transform: translateX(2000%) translateY(-100%) scale(-1, -1);
+}
+
+.tableNameC {
+  color: white;
+  transform: translateX(-1720%) translateY(100%);
+}
+
+.tableNameD {
+  color: white;
+  transform: translateX(1740%) translateY(100%);
+}
+
 .subcategoryListBoxContainer {
   width: 100%;
   display: flex;

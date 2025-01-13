@@ -2,13 +2,13 @@
 
 import React from 'react';
 import styles from './Bin.module.scss';
-import { MdDelete } from 'react-icons/md'; // Importez une icône spécifique
+import { Trash2 } from 'lucide-react';
 
 export const Bin = () => {
   return (
     <div className={styles.binContainer}>
       <div className={styles.binIcon}>
-        <MdDelete size={24} /> {/* Utilisation de l'icône */}
+        <Trash2 size={70}/>
       </div>
     </div>
   );
