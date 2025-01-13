@@ -2,15 +2,13 @@
 
 import React from 'react';
 import styles from './Bin.module.scss';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash } from '@fortawesome/free-solid-svg-icons';
-import { TableTerritory } from '@/components/ui/TableTerritory/TableTerritory';
+import { MdDelete } from 'react-icons/md'; // Importez une icône spécifique
 
 export const Bin = () => {
   return (
     <div className={styles.binContainer}>
       <div className={styles.binIcon}>
-        <FontAwesomeIcon icon={faTrash} />
+        <MdDelete size={24} /> {/* Utilisation de l'icône */}
       </div>
     </div>
   );
