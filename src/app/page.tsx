@@ -3,6 +3,7 @@
 import React from 'react';
 import styles from './index.module.scss';
 import { TableTerritory } from '@/components/ui/TableTerritory/TableTerritory';
+import { Bin } from '@/components/ui/Bin/Bin'; 
 
 export default function HomePage() {
 
@@ -47,6 +48,7 @@ export default function HomePage() {
         className={styles.topContainer}
       >
         <TableTerritory tableId="tableA" />
+        <Bin/>
         <TableTerritory tableId="tableB" />
       </div>
       <div 
@@ -57,6 +59,7 @@ export default function HomePage() {
         }}        
         className={styles.bottomContainer}>
         <TableTerritory tableId="tableC" />
+        <Bin/>
         <TableTerritory tableId="tableD" />
       </div>
     </div>

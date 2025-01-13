@@ -1,0 +1,23 @@
+.binContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: red;
+    width: 8vw;
+    height: 19vh;
+    border-radius: 10%;
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  
+  .topContainer, .bottomContainer {
+    position: relative;
+  }  
+
+  .binIcon {
+    color: white;
+    font-size: 2rem; /* Ajustez la taille si nécessaire */
+  }
+  
