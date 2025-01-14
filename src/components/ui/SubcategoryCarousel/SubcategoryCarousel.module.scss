@@ -1,45 +1,67 @@
 .carouselContainer {
   display: flex;
   align-items: center;
-  justify-content: center;
   gap: 10px;
   background-color: #fff;
-  height: 20%;
-  overflow: hidden;
+  height: 30%;
+  overflow-x: auto; /* Défilement horizontal activé */
+  overflow-y: hidden; /* Empêche le défilement vertical */
+  scrollbar-width: thin; /* Réduit la taille de la barre de défilement (Firefox) */
+  scroll-behavior: smooth; /* Défilement fluide */
+}
+
+.carouselContainer::-webkit-scrollbar {
+  height: 6px; /* Hauteur de la barre de défilement */
+}
+
+.carouselContainer::-webkit-scrollbar-track {
+  background: #f0f0f0; /* Couleur de l'arrière-plan de la barre */
+}
+
+.carouselContainer::-webkit-scrollbar-thumb {
+  background: #ccc; /* Couleur de la barre de défilement */
+  border-radius: 3px; /* Bord arrondi */
 }
 
 .arrowButton {
-  background: none;
-  border: none;
-  font-size: 1.5rem;
-  cursor: pointer;
-  margin: 0 0.5rem;
+  display: none; /* Cache les boutons de navigation */
 }
 
 .subcat {
   width: 80px;
   max-width: 80px;
-  flex: 1;
-  background: none;
-  border: none;
+  flex-shrink: 0; /* Empêche les éléments de rétrécir */
   text-align: center;
   cursor: pointer;
   color: #666;
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding: 0.5rem;
+  transition: transform 0.3s ease, color 0.3s ease;
 
   img {
     width: 36px;
     height: 36px;
     margin-bottom: 0.25rem;
+    transition: filter 0.3s ease, transform 0.3s ease;
+  }
+
+  &:hover {
+    color: #f9a826;
+
+    img {
+      transform: scale(1.1); /* Légère mise en avant au survol */
+      filter: drop-shadow(0 0 5px #f9a826);
+    }
   }
 }
 
 .active {
   color: #f9a826;
+  font-weight: bold;
 
   img {
-    filter: drop-shadow(0 0 3px #f9a826);
+    filter: drop-shadow(0 0 5px #f9a826);
   }
 }

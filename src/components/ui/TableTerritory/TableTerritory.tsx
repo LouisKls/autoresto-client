@@ -65,7 +65,7 @@ export const TableTerritory = ({ tableId }: { tableId: string }) => {
             subcategories={SUBCATEGORIES[selectedCategory]}
             selectedSubcategory={selectedSubcategory}
             onSelectSubcategory={handleSelectSubcategory}
-            visibleCount={4}
+            visibleCount={5}
           />
         )}
         <div className={styles.productsGrid}>
@@ -74,7 +74,7 @@ export const TableTerritory = ({ tableId }: { tableId: string }) => {
               key={product.id}
               product={product}
               onAdd={handleAddToCart}
-              tableId={tableId} // Passer l'ID de la table ici
+              tableId={tableId}
             />
           ))}
         </div>

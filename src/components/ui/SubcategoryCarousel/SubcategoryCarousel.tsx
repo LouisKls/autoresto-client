@@ -34,23 +34,11 @@ const SubcategoryCarousel: React.FC<SubcategoryCarouselProps> = ({
 
   return (
     <div className={styles.carouselContainer}>
-      {startIndex > 0 && (
-        <button onClick={handlePrev} className={styles.arrowButton}>
-          ←
-        </button>
-      )}
-
       {visibleSubcats.map((subcat) => (
         <div key={subcat.id} className={styles.subcat}>
         <CategoryButton imageLink={subcat.icon} label={subcat.label} selected={subcat.id === selectedSubcategory} onClick={() => onSelectSubcategory(subcat.id)}/>
         </div>
       ))}
-
-      {startIndex + visibleCount < subcategories.length && (
-        <button onClick={handleNext} className={styles.arrowButton}>
-          →
-        </button>
-      )}
     </div>
   );
 };
