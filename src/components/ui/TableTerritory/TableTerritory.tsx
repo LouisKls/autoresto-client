@@ -13,7 +13,8 @@ export const TableTerritory = ({ tableId }: { tableId: string }) => {
   const [selectedCategory, setSelectedCategory] = useState<string>('plats');
   const [selectedSubcategory, setSelectedSubcategory] = useState<string>('viandes');
   const [cart, setCart] = useState<CartItem[]>([]);
-  
+  const [isDragging, setIsDragging] = useState(false); // State to track dragging status
+
   const handleSelectCategory = (catId: string) => {
     setSelectedCategory(catId);
     const defaultSubcat = SUBCATEGORIES[catId]?.[0]?.id;
@@ -50,8 +51,20 @@ export const TableTerritory = ({ tableId }: { tableId: string }) => {
     setCart((prevCart) => prevCart.filter((item) => item.product.id !== productId));
   };
 
+  const handleStartDrag = (product: Product) => {
+    setIsDragging(true);
+    // Disable scrolling
+    document.body.style.overflow = 'hidden';
+  };
+
+  const handleEndDrag = () => {
+    setIsDragging(false);
+    // Re-enable scrolling
+    document.body.style.overflow = '';
+  };
+
   return (
-    <div 
+    <div
       className={styles.tableTerritoryContainer}
     >
       <div className={styles.selectionContainer}>
@@ -68,13 +81,18 @@ export const TableTerritory = ({ tableId }: { tableId: string }) => {
             visibleCount={5}
           />
         )}
-        <div className={styles.productsGrid}>
+        <div
+          className={styles.productsGrid}
+          style={{ overflow: isDragging ? 'hidden' : 'auto' }} // Disable scrolling during drag
+        >
           {filteredProducts.map((product) => (
             <ProductCard
               key={product.id}
               product={product}
               onAdd={handleAddToCart}
               tableId={tableId}
+              onStartDrag={handleStartDrag}
+              onEndDrag={handleEndDrag}
             />
           ))}
         </div>

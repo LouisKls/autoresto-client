@@ -1,3 +1,26 @@
+.cardClone {
+    box-sizing: border-box;
+    height: 100px;
+    min-width: 120px;
+    width: 120px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-radius: 20px;
+    background-color: white;
+    position: relative;
+    color: black;
+    box-shadow: 0px 4px 15px 0px rgba(0, 0, 0, 0.08);
+    padding: 6px;
+    margin-top: 40px;
+    padding-top: 15px;
+    margin-bottom: 5px;
+    pointer-events: none;  // Pour éviter toute interaction avec le clone
+    z-index: 1000;  // Assurez-vous que le clone est au-dessus de tout
+    opacity: 1;  // Assurez-vous que le clone est bien visible
+    transition: transform 0.1s ease;  // Pour un mouvement fluide
+}
+
 .card {
     box-sizing: border-box;
     height: 100px;
