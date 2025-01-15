@@ -44,8 +44,13 @@ export const ProductCard = ({
       // Create a clone of the product card at the initial touch position
       const touch = event.touches[0];
       touchStartPos.current = { x: touch.clientX, y: touch.clientY };
-      event.preventDefault(); // Prevent default behavior, only after 1 second
+      // event.preventDefault(); // Prevent default behavior, only after 1 second
     }, 1000); // 1 second delay
+  };
+
+  // Lors du drag, vous ajoutez les données du produit dans l'événement de drag
+  const handleDragStart = (event: React.DragEvent<HTMLDivElement>) => {
+    event.dataTransfer.setData('product', JSON.stringify({ product, tableId }));
   };
 
   const handleTouchMove = (event: React.TouchEvent<HTMLDivElement>) => {
@@ -60,16 +65,35 @@ export const ProductCard = ({
 
   const handleTouchEnd = (event: React.TouchEvent<HTMLDivElement>) => {
     if (isDragging) {
-      onEndDrag(); // End the drag
+      onEndDrag();
       setIsDragging(false);
-      setOpacity(1); // Reset opacity
-      setCloneVisible(false); // Hide the clone
-
-      // Call handleDrop after drag ends
+      setOpacity(1);
+      setCloneVisible(false);
+  
       const productData = { product, tableId };
-      event.preventDefault(); // Prevent the default action only if necessary
+      let dropLocation: 'tables' | 'bin' | 'global' = 'global'; // Default to 'global'
+  
+      // Get the touch position
+      const touch = event.changedTouches[0];
+      const targetElement = document.elementFromPoint(touch.clientX, touch.clientY);
+  
+      if (targetElement) {
+        // Check if the target is inside a Bin
+        if (targetElement.closest('.bin-container')) {
+          dropLocation = 'bin';
+        }
+        // Check if the target is inside a TableTerritory
+        else if (targetElement.closest('.tableTerritoryContainer')) {
+          dropLocation = 'tables';
+        }
+      }
+
+      console.log("Card déposé, product data :",productData, dropLocation);
+  
+      // Trigger the onDrop callback with the identified location
     }
-  };
+  };  
+  
 
   useEffect(() => {
     return () => {
@@ -86,6 +110,8 @@ export const ProductCard = ({
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
+      onDragStart={handleDragStart} // Ajoutez cette ligne pour gérer le drag
+      draggable // Rendre l'élément déplaçable
       {...props}
       className={styles.card}
       style={{ opacity: opacity }}

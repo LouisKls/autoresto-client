@@ -13,70 +13,27 @@ export default function HomePage() {
       event.preventDefault();
   }
   
-  const handleDrop = (event: React.DragEvent<HTMLDivElement>, type: string) => {
-    event.preventDefault();
-  
-    // Vérifiez si l'événement provient d'une table
-    if (type === "global") {
-      console.log("Dépôt la zone d'achat, ajout du produit à la table X");
-      return;
-    }else if (type === "tables") {
-      console.log("Dépôt sur une table, il ne se passe rien");
-      return;
-    }else if (type === "bin") {
-      console.log("Dépôt sur une poubelle, suppression du produit de la liste");
-      return;
-    }
-  
-    const productData = event.dataTransfer.getData('product');
-    const { product, tableId } = productData ? JSON.parse(productData) : { product: null, tableId: null };
-  
-    if (product && tableId) {
-      console.log("Ajouter le produit à la table:", tableId);
-    }
-  };
-    
-
-
   return (
     <div 
       onDragOver={enableDropping}  
-      onDrop={(event) => handleDrop(event, "global")}
       className={styles.pageContainer}
     >
       <div      
         className={styles.topContainer}>
 
-        <div 
-          onDragOver={enableDropping}  
-          onDrop={(event) => {
-            event.stopPropagation();
-            handleDrop(event, "tables");
-          }} 
-          className={styles.tables}
-        >
-          <TableTerritory tableId="tableA" />
+        <div className={`${styles.tables} tableTerritoryContainer`}>
+          <TableTerritory tableId="tableB" />
         </div>
 
         <div 
           onDragOver={enableDropping}  
-          onDrop={(event) => {
-            event.stopPropagation();
-            handleDrop(event, "bin");
-          }}  
+          className="bin-container"
         >
           <Bin/>
         </div>
 
-        <div 
-          onDragOver={enableDropping}  
-          onDrop={(event) => {
-            event.stopPropagation();
-            handleDrop(event, "tables");
-          }}  
-          className={styles.tables}
-        >
-          <TableTerritory tableId="tableB" />
+        <div className={`${styles.tables} tableTerritoryContainer`}>
+          <TableTerritory tableId="tableA" />
         </div>
 
       </div>
@@ -96,35 +53,18 @@ export default function HomePage() {
       <div      
         className={styles.bottomContainer}>
 
-        <div 
-          onDragOver={enableDropping}  
-          onDrop={(event) => {
-            event.stopPropagation();
-            handleDrop(event, "tables");
-          }} 
-          className={styles.tables}
-        >
+        <div className={`${styles.tables} tableTerritoryContainer`}>
           <TableTerritory tableId="tableC" />
         </div>
 
         <div 
-          onDragOver={enableDropping}  
-          onDrop={(event) => {
-            event.stopPropagation();
-            handleDrop(event, "bin");
-          }}  
+          onDragOver={enableDropping}   
+          className="bin-container"
         >
           <Bin/>
         </div>
 
-        <div 
-          onDragOver={enableDropping}  
-          onDrop={(event) => {
-            event.stopPropagation();
-            handleDrop(event, "tables");
-          }}  
-          className={styles.tables}
-        >
+        <div className={`${styles.tables} tableTerritoryContainer`}>
           <TableTerritory tableId="tableD" />
         </div>
 
