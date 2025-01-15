@@ -1,20 +1,76 @@
-import React from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import styles from './RightCart.module.scss';
-
 import { IconButton } from '@components/ui/IconButton/IconButton';
-import { X, Trash2 } from 'lucide-react';
-import { Button } from '@components/ui/Button/Button';
 import { CartItem } from '@/data/types';
+import { Button } from '@components/ui/Button/Button';
 
 interface RightCartProps {
   cart?: CartItem[];
   onRemoveItem?: (productId: number) => void;
 }
 
-const RightCart: React.FC<RightCartProps> = ({
-                                               cart = [],
-                                               onRemoveItem,
-                                             }) => {
+const RightCart: React.FC<RightCartProps> = ({ cart = [], onRemoveItem }) => {
+  const [isDragging, setIsDragging] = useState(false);
+  const [opacity, setOpacity] = useState(1);
+  const [cloneVisible, setCloneVisible] = useState(false);
+  const cloneRef = useRef<HTMLDivElement | null>(null);
+  const touchStartPos = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
+  const touchTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const draggedItemRef = useRef<CartItem | null>(null);
+
+  const handleTouchStart = (
+    event: React.TouchEvent<HTMLDivElement>,
+    item: CartItem
+  ) => {
+    if (touchTimerRef.current) {
+      clearTimeout(touchTimerRef.current);
+    }
+
+    touchTimerRef.current = setTimeout(() => {
+      if (!item) return; // Vérification supplémentaire
+      console.log('Setting draggedItemRef:', item);
+      draggedItemRef.current = item;
+      setIsDragging(true);
+      setOpacity(0.5);
+      setCloneVisible(true);
+      const touch = event.touches[0];
+      touchStartPos.current = { x: touch.clientX, y: touch.clientY };
+    }, 300);
+  };
+
+  const handleTouchMove = (event: React.TouchEvent<HTMLDivElement>) => {
+    if (isDragging && cloneRef.current) {
+      const touch = event.touches[0];
+      const dx = touch.clientX - touchStartPos.current.x;
+      const dy = touch.clientY - touchStartPos.current.y;
+      cloneRef.current.style.transform = `translate(${dx}px, ${dy}px)`;
+    }
+  };
+
+  const handleTouchEnd = (event: React.TouchEvent<HTMLDivElement>) => {
+    if (isDragging) {
+      setIsDragging(false);
+      setOpacity(1);
+      setCloneVisible(false);
+
+      const touch = event.changedTouches[0];
+      const targetElement = document.elementFromPoint(touch.clientX, touch.clientY);
+
+      if (targetElement && targetElement.closest('.bin-container')) {
+        console.log('Dropped in bin:', draggedItemRef.current);    
+      }
+      draggedItemRef.current = null;
+    }
+  };
+
+  useEffect(() => {
+    return () => {
+      if (touchTimerRef.current) {
+        clearTimeout(touchTimerRef.current);
+      }
+    };
+  }, []);
+
   const subtotal = cart.reduce(
     (sum, item) => sum + item.product.price * item.quantity,
     0
@@ -30,9 +86,15 @@ const RightCart: React.FC<RightCartProps> = ({
 
       <div className={styles.cartItems}>
         {cart.map((item) => (
-          <div key={item.product.id} className={styles.cartItem}>
+          <div
+            key={item.product.id}
+            className={styles.cartItem}
+            onTouchStart={(e) => handleTouchStart(e, item)}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
+            style={{ opacity: isDragging ? 0.5 : 1 }}
+          >
             <div className={styles.itemImage}>
-              {/* Placeholder pour l'image */}
               <div className={styles.imagePlaceholder}></div>
             </div>
             <div className={styles.itemDetails}>
@@ -49,6 +111,24 @@ const RightCart: React.FC<RightCartProps> = ({
         ))}
       </div>
 
+      {cloneVisible && draggedItemRef.current && (
+        <div
+          ref={cloneRef}
+          className={styles.itemClone}
+          style={{
+            position: 'fixed',
+            zIndex: 1000,
+            pointerEvents: 'none',
+            transform: 'translate(0, 0)',
+          }}
+        >
+          <div className={styles.itemDetailsClone}>
+            <span>{draggedItemRef.current.quantity} x</span>{' '}
+            {draggedItemRef.current.product.name}
+          </div>
+        </div>
+      )}
+
       <div className={styles.cartSummary}>
         <div className={styles.summaryRow}>
           <span>Sous-total</span>
@@ -64,12 +144,7 @@ const RightCart: React.FC<RightCartProps> = ({
         </div>
       </div>
 
-      <Button
-        variant={'contained'}
-        onClick={() => {}}
-        color={'success'}
-        thin
-      >
+      <Button variant={'contained'} onClick={() => {}} color={'success'} thin>
         Valider mon panier
       </Button>
     </div>
