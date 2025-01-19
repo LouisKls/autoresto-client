@@ -17,23 +17,29 @@ export interface TableTerritoryProps {
   reverse?: boolean;
   onAddCard: (product: Product, shared: boolean[]) => void;
   onRemoveCard: (product: Product, shared: boolean[]) => void;
+  onSendProduct: (product: Product, send: boolean[], sender: string) => void
 }
 
 export interface TableTerritoryRef {
   addToCart: (product: Product, shared: boolean[]) => void;
   removeFromCart: (product: Product) => void;
+  showSendedProduct: (product: Product, sender: string) => void;
 }
 
-export const TableTerritory = forwardRef<TableTerritoryRef, TableTerritoryProps>(({ tableId, reverse, onAddCard, onRemoveCard }, ref) => {
+export const TableTerritory = forwardRef<TableTerritoryRef, TableTerritoryProps>(({ tableId, reverse, onAddCard, onRemoveCard, onSendProduct }, ref) => {
   const [selectedCategory, setSelectedCategory] = useState<string>('plats');
   const [selectedSubcategory, setSelectedSubcategory] = useState<string>('viandes');
   const [cart, setCart] = useState<CartItem[]>([]);
   const [isDragging, setIsDragging] = useState(false); // State to track dragging status
   const [share, setShare] = useState<boolean>(false);
   const [send, setSend] = useState<boolean>(false);
+  const [sended, setSended] = useState<boolean>(false);
+  const [sender, setSender] = useState<string>("");
   const [currentProduct, setCurrentProduct] = useState<Product>();
   const [selectedShared, setSelectedShared] = useState<boolean[]>([false, false, false, false]);
+  const [selectedSend, setSelectedSend] = useState<boolean[]>([false, false, false, false]);
   const cardRefs = useRef<ProductCardRef[]>([]);
+  const sendedProductCardRef = useRef<ProductCardRef>(null);
 
   useImperativeHandle(ref, () => ({
     addToCart: (product: Product, shared: boolean[]) => {
@@ -41,6 +47,9 @@ export const TableTerritory = forwardRef<TableTerritoryRef, TableTerritoryProps>
     },
     removeFromCart: (product: Product) => {
       removeFromCart(product);
+    },
+    showSendedProduct: (product: Product, sender: string) => {
+      showSendedProduct(product, sender);
     }
   }));
 
@@ -107,13 +116,21 @@ export const TableTerritory = forwardRef<TableTerritoryRef, TableTerritoryProps>
   };
 
   const handleSend = (product: Product) => {
+    setSelectedSend([false, false, false, false]);
     setCurrentProduct(product);
     setSend(true);
   };
 
+  const showSendedProduct = (product: Product, sender: string) => {
+    setCurrentProduct(product);
+    setSender(sender);
+    setSended(true);
+  }
+
   const closeModale = () => {
     setShare(false);
     setSend(false);
+    setSended(false);
   }
 
   const handleSelectShare = (index: number) => {
@@ -131,7 +148,11 @@ export const TableTerritory = forwardRef<TableTerritoryRef, TableTerritoryProps>
     } else {
       console.log("Child not found");
     }
-    closeModale();
+    console.log(sended, sendedProductCardRef);
+    if(sended && sendedProductCardRef) {
+      sendedProductCardRef.current?.setShared(selectedShared);
+    }
+    setShare(false);
   }
 
   const addToCardRefs = (el: any) => {
@@ -148,12 +169,26 @@ export const TableTerritory = forwardRef<TableTerritoryRef, TableTerritoryProps>
     return currentProduct ? currentProduct.price / sharedNumber : 0;
   }
 
+  const handleSelectSend = (index: number) => {
+    setSelectedSend((prevState) => {
+      const newState = [...prevState]; 
+      newState[index] = !newState[index];
+      return newState;
+    });
+  };
+
+  const handleConfirmSend = () => {
+    if(currentProduct)
+      onSendProduct(currentProduct, selectedSend, tableId.charAt(tableId.length-1));
+    setSend(false);
+  }
+
   return (
     <div className={styles.tableTerritoryContainer}>
-      {reverse && <RightCart cart={cart} onRemoveItem={handleRemoveFromCart} tableId={tableId} className={(share || send) ? styles.modaleOpenned : ''}/>}
+      {reverse && <RightCart cart={cart} onRemoveItem={handleRemoveFromCart} tableId={tableId} className={(share || send || sended) ? styles.modaleOpenned : ''}/>}
       <div className={[
         styles.selectionContainer,
-        (share || send) ? styles.modaleOpenned : '',
+        (share || send || sended) ? styles.modaleOpenned : '',
       ].join(' ')}>
         <CategoryTabs
           categories={CATEGORIES}
@@ -187,8 +222,8 @@ export const TableTerritory = forwardRef<TableTerritoryRef, TableTerritoryProps>
           ))}
         </div>
       </div>
-      {!reverse && <RightCart cart={cart} onRemoveItem={handleRemoveFromCart} tableId={tableId} className={(share || send) ? styles.modaleOpenned : ''}/>}
-      {(share || send) && <div className={styles.modale}>
+      {!reverse && <RightCart cart={cart} onRemoveItem={handleRemoveFromCart} tableId={tableId} className={(share || send || sended) ? styles.modaleOpenned : ''}/>}
+      {(share || send || sended) && <div className={styles.modale}>
           <div className={styles.modaleContent}>
             <IconButton
               square={false}
@@ -199,10 +234,10 @@ export const TableTerritory = forwardRef<TableTerritoryRef, TableTerritoryProps>
             >
               <X color={"white"}/>
             </IconButton>
-            {share && <div className={classNames(styles.modaleBody, styles.shareBody)}>
+            {share ? <div className={classNames(styles.modaleBody, styles.shareBody)}>
               <div className={styles.modaleHeader}>
-                <h1>Partager un plat</h1>
-                <h2>{currentProduct?.name}</h2>
+                <h1 className={styles.modaleTitle}>Partager un plat</h1>
+                <h2 className={styles.modaleSubTitle}>{currentProduct?.name}</h2>
               </div>
               <div className={styles.shareZone}>
                 <Button variant={'contained'} onClick={tableId === "tableA" ? () => {} : () => {handleSelectShare(0)}} color={selectedShared[0] ? 'primary' : 'grey'} thin className={styles.sharedButton}>
@@ -219,17 +254,58 @@ export const TableTerritory = forwardRef<TableTerritoryRef, TableTerritoryProps>
                 </Button>
               </div>
               <div className={styles.priceLine}>
-                <p className={styles.oldPrice}>{currentProduct?.price.toFixed(2) + '€'}</p>
-                <p>soit</p>
-                <p className={styles.newPrice}>{getSharedPrice().toFixed(2) + '€'}</p>
-                <p>/ personne</p>
+                <p className={classNames(styles.oldPrice, styles.modaleText)}>{currentProduct?.price.toFixed(2) + '€'}</p>
+                <p className={styles.modaleText}>soit</p>
+                <p className={classNames(styles.newPrice, styles.modaleText)}>{getSharedPrice().toFixed(2) + '€'}</p>
+                <p className={styles.modaleText}>/ personne</p>
               </div>
               <Button variant={'contained'} onClick={handleConfirmShare} color={'success'} thin>
                   Confirmer
               </Button>
+            </div> :
+            send && <div className={classNames(styles.modaleBody, styles.sendBody)}>
+              <div className={styles.modaleHeader}>
+                <h1 className={styles.modaleTitle}>Envoyer un plat</h1>
+                <h2 className={styles.modaleSubTitle}>{currentProduct?.name}</h2>
+              </div>
+              <div className={styles.shareZone}>
+                <Button variant={'contained'} onClick={tableId === "tableA" ? () => {} : () => {handleSelectSend(0)}} color={selectedSend[0] ? 'primary' : 'grey'} thin className={styles.sharedButton}>
+                  {tableId === "tableA" ? "Vous" : "A"}
+                </Button>
+                <Button variant={'contained'} onClick={tableId === "tableB" ? () => {} : () => {handleSelectSend(1)}} color={selectedSend[1] ? 'primary' : 'grey'} thin className={styles.sharedButton}>
+                  {tableId === "tableB" ? "Vous" : "B"}
+                </Button>
+                <Button variant={'contained'} onClick={tableId === "tableC" ? () => {} : () => {handleSelectSend(2)}} color={selectedSend[2] ? 'primary' : 'grey'} thin className={styles.sharedButton}>
+                  {tableId === "tableC" ? "Vous" : "C"}
+                </Button>
+                <Button variant={'contained'} onClick={tableId === "tableD" ? () => {} : () => {handleSelectSend(3)}} color={selectedSend[3] ? 'primary' : 'grey'} thin className={styles.sharedButton}>
+                  {tableId === "tableD" ? "Vous" : "D"}
+                </Button>
+              </div>
+              <Button variant={'contained'} onClick={handleConfirmSend} color={'success'} thin>
+                  Envoyer
+              </Button>
             </div>}
-            {send && <div className={classNames(styles.modaleBody, styles.sendBody)}>
-              <h1>Send</h1>
+            {sended && <div className={classNames(styles.modaleBody, styles.sendedBody)}
+                      style={share || send ? {display: 'none'} : {display: 'flex'}}>
+              <div className={styles.modaleHeader}>
+                <div className={styles.sendedTitle}>
+                  <h1 className={styles.modaleTitle}>Article partagé par</h1>
+                  <h1 className={classNames(styles.sender, styles.modaleTitle)}>{sender}</h1>
+                  <h1 className={styles.modaleTitle}>!</h1>
+                </div>
+              </div>
+              {currentProduct && <ProductCard
+                key={currentProduct.id}
+                ref={sendedProductCardRef}
+                product={currentProduct}
+                onAdd={handleAddToCart}
+                onShare={handleShare}
+                onSend={handleSend}
+                tableId={tableId}
+                onStartDrag={handleStartDrag}
+                onEndDrag={handleEndDrag}
+              />}
             </div>}
           </div>
       </div>}

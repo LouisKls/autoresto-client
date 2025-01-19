@@ -54,14 +54,22 @@
         align-items: center;
         gap: 30px;
         padding: 10px;
-        h1 {
+        .modaleTitle {
           font-size: 20px;
           text-align: center;
         }
-        h2 {
+        .modaleSubTitle {
           font-weight: 400;
           font-size: 15px;
           text-align: center;
+        }
+        .sendedTitle {
+          display: flex;
+          gap: 2px;
+          .sender {
+            color: $primary;
+            font-weight: bold;
+          }
         }
         .shareZone {
           width: 70%;
@@ -73,7 +81,7 @@
             width: 45%;
           }
         }
-        p {
+        .modaleText {
           font-size: 10px;
         }
         .priceLine {

@@ -32,6 +32,13 @@ export default function HomePage() {
     if(shared[2] && tableC.current) tableC.current.removeFromCart(product);
     if(shared[3] && tableD.current) tableD.current.removeFromCart(product);
   }
+
+  const handleSend = (product: Product, send: boolean[], sender: string) => {
+    if(send[0] && tableA.current) tableA.current.showSendedProduct(product, sender);
+    if(send[1] && tableB.current) tableB.current.showSendedProduct(product, sender);
+    if(send[2] && tableC.current) tableC.current.showSendedProduct(product, sender);
+    if(send[3] && tableD.current) tableD.current.showSendedProduct(product, sender);
+  }
   
   return (
     <div 
@@ -42,7 +49,7 @@ export default function HomePage() {
         className={styles.topContainer}>
 
         <div className={`${styles.tables} tableTerritoryContainer`}>
-          <TableTerritory tableId="tableC" onAddCard={handleAddCard} onRemoveCard={handleRemoveCard} ref={tableC}/>
+          <TableTerritory tableId="tableC" onAddCard={handleAddCard} onRemoveCard={handleRemoveCard} onSendProduct={handleSend} ref={tableC}/>
         </div>
 
         <div 
@@ -53,7 +60,7 @@ export default function HomePage() {
         </div>
 
         <div className={`${styles.tables} tableTerritoryContainer`}>
-          <TableTerritory tableId="tableD" reverse={true} onAddCard={handleAddCard} onRemoveCard={handleRemoveCard} ref={tableD}/>
+          <TableTerritory tableId="tableD" reverse={true} onAddCard={handleAddCard} onRemoveCard={handleRemoveCard} onSendProduct={handleSend} ref={tableD}/>
         </div>
 
       </div>
@@ -73,7 +80,7 @@ export default function HomePage() {
         className={styles.bottomContainer}>
 
         <div className={`${styles.tables} tableTerritoryContainer`}>
-          <TableTerritory tableId="tableA" onAddCard={handleAddCard} onRemoveCard={handleRemoveCard} ref={tableA}/>
+          <TableTerritory tableId="tableA" onAddCard={handleAddCard} onRemoveCard={handleRemoveCard} onSendProduct={handleSend} ref={tableA}/>
         </div>
 
         <div 
@@ -84,7 +91,7 @@ export default function HomePage() {
         </div>
 
         <div className={`${styles.tables} tableTerritoryContainer`}>
-          <TableTerritory tableId="tableB" reverse={true} onAddCard={handleAddCard} onRemoveCard={handleRemoveCard} ref={tableB}/>
+          <TableTerritory tableId="tableB" reverse={true} onAddCard={handleAddCard} onRemoveCard={handleRemoveCard} onSendProduct={handleSend} ref={tableB}/>
         </div>
 
       </div>
