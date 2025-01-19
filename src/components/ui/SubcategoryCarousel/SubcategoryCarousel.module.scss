@@ -3,24 +3,9 @@
   align-items: center;
   gap: 10px;
   background-color: #fff;
-  height: 30%;
+  height: 25%;
   overflow-x: auto; /* Défilement horizontal activé */
   overflow-y: hidden; /* Empêche le défilement vertical */
-  scrollbar-width: thin; /* Réduit la taille de la barre de défilement (Firefox) */
-  scroll-behavior: smooth; /* Défilement fluide */
-}
-
-.carouselContainer::-webkit-scrollbar {
-  height: 6px; /* Hauteur de la barre de défilement */
-}
-
-.carouselContainer::-webkit-scrollbar-track {
-  background: #f0f0f0; /* Couleur de l'arrière-plan de la barre */
-}
-
-.carouselContainer::-webkit-scrollbar-thumb {
-  background: #ccc; /* Couleur de la barre de défilement */
-  border-radius: 3px; /* Bord arrondi */
 }
 
 .arrowButton {

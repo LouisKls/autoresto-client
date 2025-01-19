@@ -1,15 +1,19 @@
 import React, { useState, useRef, useEffect } from 'react';
 import styles from './RightCart.module.scss';
 import { IconButton } from '@components/ui/IconButton/IconButton';
-import { CartItem } from '@/data/types';
+import { CartItem, Product } from '@/data/types';
 import { Button } from '@components/ui/Button/Button';
+import classNames from 'classnames';
+import { Users } from 'lucide-react';
 
 interface RightCartProps {
   cart?: CartItem[];
-  onRemoveItem?: (productId: number) => void;
+  onRemoveItem: (product: Product, shared: boolean[]) => void;
+  tableId: string
+  className?: string;
 }
 
-const RightCart: React.FC<RightCartProps> = ({ cart = [], onRemoveItem }) => {
+const RightCart: React.FC<RightCartProps> = ({ cart = [], onRemoveItem, tableId, className }) => {
   const [isDragging, setIsDragging] = useState(false);
   const [opacity, setOpacity] = useState(1);
   const [cloneVisible, setCloneVisible] = useState(false);
@@ -17,6 +21,7 @@ const RightCart: React.FC<RightCartProps> = ({ cart = [], onRemoveItem }) => {
   const touchStartPos = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
   const touchTimerRef = useRef<NodeJS.Timeout | null>(null);
   const draggedItemRef = useRef<CartItem | null>(null);
+  const [tableIds, setTableIds] = useState<string[]>(["tableA", "tableB", "tableC", "tableD"]);
 
   const handleTouchStart = (
     event: React.TouchEvent<HTMLDivElement>,
@@ -57,11 +62,35 @@ const RightCart: React.FC<RightCartProps> = ({ cart = [], onRemoveItem }) => {
       const targetElement = document.elementFromPoint(touch.clientX, touch.clientY);
 
       if (targetElement && targetElement.closest('.bin-container')) {
-        console.log('Dropped in bin:', draggedItemRef.current);    
+        console.log('Dropped in bin:', draggedItemRef.current);
+        if(draggedItemRef.current) onRemoveItem(draggedItemRef.current.product, draggedItemRef.current.shared);
       }
       draggedItemRef.current = null;
     }
   };
+
+  const isShared = (item: CartItem) => {
+    for(let i = 0; i < item.shared.length; i++) {
+      if(item.shared[i] && tableId != tableIds[i]) return true;
+    }
+    return false;
+  }
+
+  const getSharedLabel = (item: CartItem) => {
+    let result = "";
+    for(let i = 0; i < item.shared.length; i++) {
+      if(item.shared[i] && tableId != tableIds[i]) result += tableIds[i].charAt(tableIds[i].length-1);
+    }
+    return result;
+  }
+
+  const getSharedPrice = (item: CartItem) => {
+    let sharedNumber = 0;
+    item.shared.forEach(shared => {
+      if(shared) sharedNumber++;
+    });
+    return item.product ? item.product.price / sharedNumber : 0;
+  }
 
   useEffect(() => {
     return () => {
@@ -79,7 +108,10 @@ const RightCart: React.FC<RightCartProps> = ({ cart = [], onRemoveItem }) => {
   const total = subtotal - reduction;
 
   return (
-    <div className={styles.rightCartContent}>
+    <div className={[
+      styles.rightCartContent,
+      className ? className : '',
+    ].join(' ')}>
       <div className={styles.rightCartHeader}>
         <div className={styles.rightCartTitle}>Mon Panier</div>
       </div>
@@ -94,19 +126,33 @@ const RightCart: React.FC<RightCartProps> = ({ cart = [], onRemoveItem }) => {
             onTouchEnd={handleTouchEnd}
             style={{ opacity: isDragging ? 0.5 : 1 }}
           >
-            <div className={styles.itemImage}>
-              <div className={styles.imagePlaceholder}></div>
-            </div>
-            <div className={styles.itemDetails}>
-              <div className={styles.itemInfo}>
-                <span className={styles.itemQuantity}>{item.quantity}</span>
-                <span className={styles.itemX}>x</span>
-                <span className={styles.itemName}>{item.product.name}</span>
+            <div className={styles.itemLine}>
+              <div className={styles.itemImage}>
+                <div className={styles.imagePlaceholder}></div>
               </div>
-              <div className={styles.itemPrice}>
-                {(item.product.price * item.quantity).toFixed(2)} €
+              <div className={styles.itemDetails}>
+                <div className={styles.itemInfo}>
+                  <span className={styles.itemQuantity}>{item.quantity}</span>
+                  <span className={styles.itemX}>x</span>
+                  <span className={styles.itemName}>{item.product.name}</span>
+                </div>
+                <div className={classNames(styles.itemPrice, isShared(item) ? styles.itemPriceShared : '')}>
+                  {(item.product.price * item.quantity).toFixed(2)} €
+                </div>
               </div>
             </div>
+            {isShared(item) && <div className={styles.itemLine}>
+              <div className={styles.itemDetails}>
+                <div className={styles.itemInfo}>
+                  <Users className={styles.sharedIcon} />
+                  <span className={styles.itemSharedWithLabel}>Partagé avec :</span>
+                  <span className={styles.itemSharedLabel}>{getSharedLabel(item)}</span>
+                </div>
+                <div className={styles.itemPrice}>
+                  {(getSharedPrice(item) * item.quantity).toFixed(2)} €
+                </div>
+              </div>
+            </div>}
           </div>
         ))}
       </div>

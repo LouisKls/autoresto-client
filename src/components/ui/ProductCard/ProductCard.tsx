@@ -1,27 +1,39 @@
-import React, { useState, useRef, useEffect } from 'react';
+'use client';
+
+import React, { useState, useRef, useEffect, forwardRef, useImperativeHandle } from 'react';
 import styles from './ProductCard.module.scss';
 import { Product } from '@/data/types';
 import { IconButton } from '@components/ui/IconButton/IconButton';
-import { Plus } from 'lucide-react';
+import { Users, Send } from 'lucide-react';
 import Image from 'next/image';
+import classNames from 'classnames';
 
 // ProductCard.tsx
 interface ProductCardProps {
   product: Product;
-  onAdd: (product: Product) => void;
+  onAdd: (product: Product, shared: boolean[]) => void;
+  onShare: (product: Product, shared: boolean[]) => void;
+  onSend: (product: Product) => void;
   tableId: string; // Ajouter un identifiant de table ici
   onStartDrag: (product: Product) => void; // Fonction pour notifier le début du drag
   onEndDrag: () => void; // Fonction pour notifier la fin du drag
 }
 
-export const ProductCard = ({
+export interface ProductCardRef {
+  getProductId: () => number;
+  setShared: (shared: boolean[]) => void;
+}
+
+export const ProductCard = forwardRef<ProductCardRef, ProductCardProps>(({
   product,
   onAdd,
+  onSend,
+  onShare,
   tableId,
   onStartDrag,
   onEndDrag,
   ...props
-}: ProductCardProps) => {
+}: ProductCardProps, ref: any) => {
   const [isDragging, setIsDragging] = useState(false);
   const [opacity, setOpacity] = useState(1);
   const [cloneVisible, setCloneVisible] = useState(false);
@@ -29,22 +41,29 @@ export const ProductCard = ({
   const cloneRef = useRef<HTMLDivElement | null>(null);
   const touchTimerRef = useRef<NodeJS.Timeout | null>(null);
   const touchStartPos = useRef<{ x: number, y: number }>({ x: 0, y: 0 });
+  const touchDownRef = useRef(false);
+  const [selectedShared, setSelectedShared] = useState<boolean[]>([tableId === "tableA", tableId === "tableB", tableId === "tableC", tableId === "tableD"]);
+  const [tableIds, setTableIds] = useState<string[]>(["tableA", "tableB", "tableC", "tableD"]);
 
   const handleTouchStart = (event: React.TouchEvent<HTMLDivElement>) => {
+    touchDownRef.current = true;
     if (touchTimerRef.current) {
       clearTimeout(touchTimerRef.current); // Clear any existing timer
     }
 
     // We only start drag after 1 second of touch, so delay preventDefault
     touchTimerRef.current = setTimeout(() => {
-      onStartDrag(product); // Start the drag after 1 second
-      setIsDragging(true);
-      setOpacity(0.5); // Apply opacity to the original card
-      setCloneVisible(true); // Make the visual clone appear
-      // Create a clone of the product card at the initial touch position
-      const touch = event.touches[0];
-      touchStartPos.current = { x: touch.clientX, y: touch.clientY };
-      // event.preventDefault(); // Prevent default behavior, only after 1 second
+      console.log(touchDownRef.current);
+      if(touchDownRef.current) {
+        onStartDrag(product); // Start the drag after 1 second
+        setIsDragging(true);
+        setOpacity(0.5); // Apply opacity to the original card
+        setCloneVisible(true); // Make the visual clone appear
+        // Create a clone of the product card at the initial touch position
+        const touch = event.touches[0];
+        touchStartPos.current = { x: touch.clientX, y: touch.clientY };
+        // event.preventDefault(); // Prevent default behavior, only after 1 second
+      }
     }, 1000); // 1 second delay
   };
 
@@ -64,6 +83,7 @@ export const ProductCard = ({
   };
 
   const handleTouchEnd = (event: React.TouchEvent<HTMLDivElement>) => {
+    touchDownRef.current = false;
     if (isDragging) {
       onEndDrag();
       setIsDragging(false);
@@ -88,12 +108,46 @@ export const ProductCard = ({
         }
       }
 
-      console.log("Card déposé, product data :",productData, dropLocation);
+      console.log("Card déposé, product data :", productData, dropLocation);
+      if(dropLocation == "global") {
+        onAdd(product, selectedShared);
+      }
   
       // Trigger the onDrop callback with the identified location
     }
-  };  
+  };
+
+  const isShared = () => {
+    for(let i = 0; i < selectedShared.length; i++) {
+      if(selectedShared[i] && tableId != tableIds[i]) return true;
+    }
+    return false;
+  }
+
+  const getSharedLabel = () => {
+    let result = "";
+    for(let i = 0; i < selectedShared.length; i++) {
+      if(selectedShared[i] && tableId != tableIds[i]) result += tableIds[i].charAt(tableIds[i].length-1);
+    }
+    return result;
+  }
+
+  const getSharedPrice = () => {
+    let sharedNumber = 0;
+    selectedShared.forEach(shared => {
+      if(shared) sharedNumber++;
+    });
+    return product ? product.price / sharedNumber : 0;
+  }
   
+  useImperativeHandle(ref, () => ({
+    setShared: (shared: boolean[]) => {
+      setSelectedShared(shared);
+    },
+    getProductId: () => {
+      return product.id;
+    }
+  }));
 
   useEffect(() => {
     return () => {
@@ -120,18 +174,34 @@ export const ProductCard = ({
       <div className={styles.cardImage}>
         <Image src={product.image} alt={product.name} width={56} height={40} className={styles.img} />
       </div>
+      { isShared() && <Users className={styles.sharedIcon} />}
       <div className={styles.cardBody}>
         <h1 className={styles.cardTitle}>{product.name}</h1>
         <p className={styles.cardDescription}>{product.description}</p>
       </div>
       <div className={styles.cardFooter}>
-        <div className={styles.cardPrice}>{product.price.toFixed(2) + '€'}</div>
+        <div className={styles.cardPriceSection}>
+          <div className={classNames(styles.cardPrice, isShared() ? styles.cardOldPrice : '')}>{product.price.toFixed(2) + '€'}</div>
+          { isShared() && <div className={styles.cardNewPrice}>{getSharedPrice().toFixed(2) + '€ / pers'}</div> }
+        </div>
         <IconButton
           square={false}
           disabled={false}
-          onClick={() => onAdd(product)}
+          onClick={() => onShare(product, selectedShared)}
+          className={styles.sharedButton}
         >
-          <Plus color={"white"} />
+          { isShared() ?
+            <p className={styles.sharedLabel}>{getSharedLabel()}</p>
+            : <Users color={"white"} />
+          }
+        </IconButton>
+        <IconButton
+          square={false}
+          disabled={false}
+          onClick={() => onSend(product)}
+          color='secondary'
+        >
+          <Send color={"white"}/>
         </IconButton>
       </div>
 
@@ -150,22 +220,38 @@ export const ProductCard = ({
           <div className={styles.cardImage}>
             <Image src={product.image} alt={product.name} width={56} height={40} className={styles.img} />
           </div>
+          { isShared() && <Users className={styles.sharedIcon} />}
           <div className={styles.cardBody}>
             <h1 className={styles.cardTitle}>{product.name}</h1>
             <p className={styles.cardDescription}>{product.description}</p>
           </div>
           <div className={styles.cardFooter}>
-            <div className={styles.cardPrice}>{product.price.toFixed(2) + '€'}</div>
+            <div className={styles.cardPriceSection}>
+              <div className={classNames(styles.cardPrice, isShared() ? styles.cardOldPrice : '')}>{product.price.toFixed(2) + '€'}</div>
+              { isShared() && <div className={styles.cardNewPrice}>{getSharedPrice().toFixed(2) + '€ / pers'}</div> }
+            </div>
             <IconButton
               square={false}
               disabled={false}
-              onClick={() => onAdd(product)}
+              onClick={() => onShare(product, selectedShared)}
+              className={styles.sharedButton}
             >
-              <Plus color={"white"} />
+              { isShared() ?
+                <p className={styles.sharedLabel}>{getSharedLabel()}</p>
+                : <Users color={"white"} />
+              }
+            </IconButton>
+            <IconButton
+              square={false}
+              disabled={false}
+              onClick={() => onSend(product)}
+              color='secondary'
+            >
+              <Send color={"white"}/>
             </IconButton>
           </div>
         </div>
       )}
     </div>
   );
-};
+});

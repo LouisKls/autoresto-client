@@ -10,6 +10,7 @@ export interface IconButtonProps {
   color?: ButtonColor;
   children: JSX.Element;
   onClick?: MouseEventHandler<HTMLButtonElement>;
+  className?: string;
 }
 
 export const IconButton = ({
@@ -19,11 +20,12 @@ export const IconButton = ({
   small,
   color = 'primary',
   children,
+  className,
 }: IconButtonProps) => {
   return (
     <button
       onClick={!disabled ? onClick : undefined}
-      className={classNames(styles.root, styles[color], square ? styles.square : styles.circle, disabled && styles.disabled, small && styles.small)}
+      className={classNames(styles.root, styles[color], square ? styles.square : styles.circle, disabled && styles.disabled, small && styles.small, className ? className : '')}
     >
       {children}
     </button>

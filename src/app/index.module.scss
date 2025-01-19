@@ -32,24 +32,38 @@
   color: white;
 }
 
+.tableNameA, .tableNameB, .tableNameC, .tableNameD {
+  color: $primary;
+  position: absolute;
+  background-color: white;
+  width: 100px;
+  text-align: center;
+  height: 30px;
+  border-radius: 10px;
+  font-weight: bold;
+  box-shadow: 0px 4px 2px 0px rgba(0, 0, 0, 0.08);
+}
+
 .tableNameA {
-  color: white;
-  transform: translateX(-1600%) translateY(-100%) scale(-1, -1);
+  left: 20%;
+  bottom: 44%;
 }
 
 .tableNameB {
-  color: white;
-  transform: translateX(2000%) translateY(-100%) scale(-1, -1);
+  right: 20%;
+  bottom: 44%;
 }
 
 .tableNameC {
-  color: white;
-  transform: translateX(-1720%) translateY(100%);
+  right: 20%;
+  top: 44%;
+  transform: scale(-1, -1);
 }
 
 .tableNameD {
-  color: white;
-  transform: translateX(1740%) translateY(100%);
+  left: 20%;
+  top: 44%;
+  transform: scale(-1, -1);
 }
 
 .subcategoryListBoxContainer {

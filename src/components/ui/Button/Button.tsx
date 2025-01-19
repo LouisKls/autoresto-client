@@ -13,6 +13,7 @@ export type ButtonColor =
   | 'primary'
   | 'grey'
   | 'primaryLight'
+  | 'secondary'
   | 'blue'
   | 'orange';
 

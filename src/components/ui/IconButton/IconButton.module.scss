@@ -56,6 +56,18 @@
     }
   }
 
+  &.secondary {
+    background-color: $secondary;
+
+    &:hover {
+      background-color: $secondary_dark;
+    }
+
+    &:has(.loading.active) {
+      background-color: $secondary_light;
+    }
+  }
+
   &.danger {
     background-color: $red_primary;
 
